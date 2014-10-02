@@ -1,6 +1,10 @@
 cmake_minimum_required (VERSION 3.0)
 project (traffic-service)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0") # implicit: -g
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -mtune=native") # implicit: -DNDEBUG -O3 
+
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
@@ -16,8 +20,10 @@ find_library(ZMQ_LIBRARIES NAMES zmq libzmq
              HINTS ${PC_ZMQ_LIBDIR} ${PC_ZMQ_LIBRARY_DIRS})
 
 
-add_definitions(-std=c++11)
+enable_testing()
 
 add_subdirectory(messages)
 add_subdirectory(backend)
 add_subdirectory(server)
+
+add_subdirectory(test)
