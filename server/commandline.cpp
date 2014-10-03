@@ -87,6 +87,10 @@ traffic::Commandline::Commandline()
 		 "Number of workers to spawn")
 		("storage,s", po::value<StorageType>()->required(),
 		 "Specify the backend storage type (sqlite, mysql, postgres)")
+		("table_in,I", po::value<std::string>()->required(),
+		 "The database table name for incomming traffic")
+		("table_out,O", po::value<std::string>()->required(),
+		 "The database table name for outgoing traffic")
 		;
 }
 
