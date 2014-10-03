@@ -40,7 +40,10 @@ TEST(ServerCommandline, test_bind_single) {
 
 TEST(ServerCommandline, test_bind_multi) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-b", "abcde", "--bind", "1234", "-b", "12ab"};
+	const char* argv[] = {"foobar",
+		"-b", "abcde",
+		"--bind", "1234",
+		"-b", "12ab"};
 
 	EXPECT_TRUE(cmd.parse(7, argv));
 
@@ -49,4 +52,12 @@ TEST(ServerCommandline, test_bind_multi) {
 	EXPECT_EQ(addr[0], "abcde");
 	EXPECT_EQ(addr[1], "1234");
 	EXPECT_EQ(addr[2], "12ab");
+}
+
+
+TEST(ServerCommandline, test_bind_missing) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", "-b"};
+
+	ASSERT_FALSE(cmd.parse(2, argv));
 }
