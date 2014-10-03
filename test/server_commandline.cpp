@@ -8,6 +8,10 @@
 
 #include "commandline.h"
 
+#define REQUIRED_TABLES "-I", "a", "-O", "b"
+#define REQUIRED_STORAGE "-s", "sqlite"
+#define REQUIRED REQUIRED_STORAGE, REQUIRED_TABLES
+
 
 class ServerCommandline : public ::testing::Test
 {
@@ -61,9 +65,9 @@ TEST_F(ServerCommandline, test_help) {
 // Test if default bind works
 TEST_F(ServerCommandline, test_bind_default) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-s", "sqlite"};
+	const char* argv[] = {"foobar", REQUIRED};
 
-	EXPECT_TRUE(cmd.parse(3, argv));
+	EXPECT_TRUE(cmd.parse(1 + 2 + 4, argv));
 
 	std::vector<std::string> addr(cmd.addresses());
 	EXPECT_EQ(addr.size(), 1U);
@@ -74,9 +78,9 @@ TEST_F(ServerCommandline, test_bind_default) {
 // Test if we can bind a single address
 TEST_F(ServerCommandline, test_bind_single) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-b", "abcde", "-s", "sqlite"};
+	const char* argv[] = {"foobar", "-b", "abcde", REQUIRED};
 
-	EXPECT_TRUE(cmd.parse(5, argv));
+	EXPECT_TRUE(cmd.parse(3 + 2 + 4, argv));
 
 	std::vector<std::string> addr(cmd.addresses());
 	EXPECT_EQ(addr.size(), 1U);
@@ -91,9 +95,9 @@ TEST_F(ServerCommandline, test_bind_multi) {
 		"-b", "abcde",
 		"--bind", "1234",
 		"-b", "12ab",
-		"-s", "sqlite"};
+		REQUIRED};
 
-	EXPECT_TRUE(cmd.parse(9, argv));
+	EXPECT_TRUE(cmd.parse(7 + 2 + 4, argv));
 
 	std::vector<std::string> addr(cmd.addresses());
 	EXPECT_EQ(addr.size(), 3U);
@@ -106,9 +110,9 @@ TEST_F(ServerCommandline, test_bind_multi) {
 // Test if we get an error if bind arg is omitted
 TEST_F(ServerCommandline, test_bind_missing) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-s", "sqlite", "-b"};
+	const char* argv[] = {"foobar", REQUIRED, "-b"};
 
-	EXPECT_FALSE(cmd.parse(4, argv));
+	EXPECT_FALSE(cmd.parse(2 + 2 + 4, argv));
 	EXPECT_NE(error().find("the required argument for "
 			       "option '--bind' is missing"),
 		  std::string::npos);
@@ -118,9 +122,9 @@ TEST_F(ServerCommandline, test_bind_missing) {
 // Test missing storage type
 TEST_F(ServerCommandline, test_missing_storage_type) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar"};
+	const char* argv[] = {"foobar", REQUIRED_TABLES};
 
-	EXPECT_FALSE(cmd.parse(1, argv));
+	EXPECT_FALSE(cmd.parse(1 + 4, argv));
 	EXPECT_NE(error().find("the option '--storage' "
 			       "is required but missing"),
 		  std::string::npos);
@@ -130,9 +134,9 @@ TEST_F(ServerCommandline, test_missing_storage_type) {
 // Test for sqlite storage type
 TEST_F(ServerCommandline, test_storage_sqlite) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-s", "sqlite"};
+	const char* argv[] = {"foobar", REQUIRED_TABLES, "-s", "sqlite"};
 
-	EXPECT_TRUE(cmd.parse(3, argv));
+	EXPECT_TRUE(cmd.parse(3 + 4, argv));
 
 	EXPECT_EQ(cmd.storage_type(), traffic::Commandline::SQLITE);
 }
@@ -141,9 +145,9 @@ TEST_F(ServerCommandline, test_storage_sqlite) {
 // Test for mysql storage type
 TEST_F(ServerCommandline, test_storage_mysql) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-s", "mysql"};
+	const char* argv[] = {"foobar", "-s", "mysql", REQUIRED_TABLES};
 
-	EXPECT_TRUE(cmd.parse(3, argv));
+	EXPECT_TRUE(cmd.parse(3 + 4, argv));
 
 	EXPECT_EQ(cmd.storage_type(), traffic::Commandline::MYSQL);
 }
@@ -152,9 +156,9 @@ TEST_F(ServerCommandline, test_storage_mysql) {
 // Test for postgres storage type
 TEST_F(ServerCommandline, test_storage_postgres) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-s", "postgres"};
+	const char* argv[] = {"foobar", "-s", "postgres", REQUIRED_TABLES};
 
-	EXPECT_TRUE(cmd.parse(3, argv));
+	EXPECT_TRUE(cmd.parse(3 + 4, argv));
 
 	EXPECT_EQ(cmd.storage_type(), traffic::Commandline::POSTGRES);
 }
@@ -163,9 +167,9 @@ TEST_F(ServerCommandline, test_storage_postgres) {
 // Test for invalid storage type
 TEST_F(ServerCommandline, test_storage_invalid) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-s", "peng"};
+	const char* argv[] = {"foobar", "-s", "peng", REQUIRED_TABLES};
 
-	EXPECT_FALSE(cmd.parse(3, argv));
+	EXPECT_FALSE(cmd.parse(3 + 4, argv));
 
 	EXPECT_NE(error().find("the argument for option "
 			       "'--storage' is invalid"),
@@ -176,9 +180,9 @@ TEST_F(ServerCommandline, test_storage_invalid) {
 // Test for sqlite storage type
 TEST_F(ServerCommandline, test_worker_default) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-s", "sqlite"};
+	const char* argv[] = {"foobar", "-s", "sqlite", REQUIRED_TABLES};
 
-	EXPECT_TRUE(cmd.parse(3, argv));
+	EXPECT_TRUE(cmd.parse(3 + 4, argv));
 
 	EXPECT_EQ(cmd.worker(), 2U);
 }
@@ -187,9 +191,9 @@ TEST_F(ServerCommandline, test_worker_default) {
 // Test for sqlite storage type
 TEST_F(ServerCommandline, test_worker_count) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-s", "sqlite", "-w", "5"};
+	const char* argv[] = {"foobar", "-w", "5", REQUIRED};
 
-	EXPECT_TRUE(cmd.parse(5, argv));
+	EXPECT_TRUE(cmd.parse(3 + 2 + 4, argv));
 
 	EXPECT_EQ(cmd.worker(), 5U);
 }
