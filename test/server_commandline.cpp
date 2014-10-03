@@ -108,5 +108,7 @@ TEST_F(ServerCommandline, test_bind_missing) {
 	const char* argv[] = {"foobar", "-b"};
 
 	EXPECT_FALSE(cmd.parse(2, argv));
-	EXPECT_NE(error().find("the required argument for option '--bind' is missing"), std::string::npos);
+	EXPECT_NE(error().find("the required argument for "
+			       "option '--bind' is missing"),
+		  std::string::npos);
 }
