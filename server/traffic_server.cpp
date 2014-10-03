@@ -96,6 +96,16 @@ void traffic::TrafficServer::run()
 }
 
 
+void traffic::TrafficServer::stop()
+{
+	_workers->close();
+	_incomming->close();
+	_context.reset();
+	for (std::thread &thread : _threads)
+		thread.join();
+}
+
+
 traffic::TrafficServer::TrafficServer()
 :
 	_context(new zmq::context_t(1)),

@@ -129,6 +129,8 @@ public:
 	 */
 	void run();
 
+	void stop();
+
 	TrafficServer();
 	~TrafficServer();
 };
