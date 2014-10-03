@@ -1,6 +1,10 @@
 #include "gtest/gtest.h"
 
+#include "commandline.h"
 
 TEST(ServerCommandline, test_help) {
-	EXPECT_EQ(0, 0);
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", "-h"};
+
+	ASSERT_FALSE(cmd.parse(2, argv));
 }
