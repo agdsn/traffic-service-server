@@ -1,3 +1,4 @@
+#include <istream>
 #include <iostream>
 
 #include <boost/assert.hpp>
@@ -6,6 +7,12 @@
 
 
 #define DEFAULT_CONNECTION "*:3444"
+
+
+namespace traffic {
+	std::istream& operator>>(std::istream& in,
+				 Commandline::StorageType& type);
+}
 
 
 std::vector<std::string>
@@ -19,18 +26,30 @@ traffic::Commandline::addresses() const
 }
 
 
+traffic::Commandline::StorageType
+traffic::Commandline::storage_type() const
+{
+	BOOST_ASSERT(_vm.count("storage") && "No storage type specified!");
+
+	if (! _vm.count("storage"))
+		return SQLITE;
+	return _vm["storage"].as<StorageType>();
+}
+
+
 bool traffic::Commandline::parse(int argc, char const *argv[])
 {
 	try {
 		po::store(po::parse_command_line(argc, argv, _desc), _vm);
+
+		if (_vm.count("help")) {
+			std::cout << _desc << std::endl;
+			return false;
+		}
+
 		po::notify(_vm);
 	} catch (std::exception &e) {
 		std::cerr << e.what() << std::endl;
-		return false;
-	}
-
-	if (_vm.count("help")) {
-		std::cout << _desc << std::endl;
 		return false;
 	}
 
@@ -52,5 +71,24 @@ traffic::Commandline::Commandline()
 				DEFAULT_CONNECTION)
 			->composing(),
 		 "address:port combinations to bind to")
+		("storage,s", po::value<StorageType>()->required(),
+		 "Specify the backend storage type (sqlite, mysql, postgres)")
 		;
+}
+
+
+std::istream& traffic::operator>>(std::istream& in,
+		                  Commandline::StorageType& type)
+{
+	std::string token;
+	in >> token;
+	if (token == "sqlite")
+		type = traffic::Commandline::SQLITE;
+	else if (token == "mysql")
+		type = traffic::Commandline::MYSQL;
+	else if (token == "postgres")
+		type = traffic::Commandline::POSTGRES;
+	else throw po::validation_error(
+			po::validation_error::invalid_option_value);
+	return in;
 }

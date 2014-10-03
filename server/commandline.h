@@ -17,6 +17,13 @@ namespace po = boost::program_options;
  */
 class Commandline
 {
+public:
+	enum StorageType {
+		SQLITE,
+		MYSQL,
+		POSTGRES
+	};
+
 private:
 	po::options_description _desc;
 	po::variables_map _vm;
@@ -33,6 +40,8 @@ public:
 	 * listen for client connections.
 	 */
 	std::vector<std::string> addresses() const;
+
+	StorageType storage_type() const;
 
 	/**
 	 * \brief Parse the commandline arguments.
