@@ -9,23 +9,55 @@
 void traffic::TrafficServer::WorkerBase::run(zmq::context_t &context)
 {
 	zmq::socket_t socket (context, ZMQ_REP);
-	socket.connect (WORKER_PORT);
+
+	{
+		std::lock_guard<std::mutex> lk(_setup_mutex);
+
+		if (! this->set_up()) {
+			std::cerr << "Error in worker setup!" << std::endl;
+			_setup_done = true;
+			return;
+		}
+
+		socket.connect (WORKER_PORT);
+		_setup_done = true;
+	}
+	std::cerr << "setup done" << std::endl;
+	_cv.notify_all();
 
 	while (true) {
-		zmq::message_t request;
-		socket.recv (&request);
+		try {
+			zmq::message_t request;
+			socket.recv (&request);
 
-		std::string result;
-		if (!process(result, request.data(), request.size()))
-			std::cerr << "Error processing message of "
-				  << request.size() << " bytes!";
+			std::string result;
+			if (!this->process(result, request.data(), request.size()))
+				std::cerr << "Error processing message of "
+					  << request.size() << " bytes!";
 
-		zmq::message_t response(result.size());
-		memcpy(response.data(), result.c_str(), result.size());
+			zmq::message_t response(result.size());
+			memcpy(response.data(), result.c_str(), result.size());
 
-		socket.send(response);
+			socket.send(response);
+		} catch (std::exception &e) {
+			std::cerr << "Worker died: " << e.what() << std::endl;
+			return;
+		}
 	}
+	socket.close();
 }
+
+
+traffic::TrafficServer::WorkerBase::WorkerBase()
+:
+	_setup_mutex(),
+	_cv(),
+	_setup_done(false)
+{ }
+
+
+traffic::TrafficServer::WorkerBase::~WorkerBase()
+{ }
 
 
 bool traffic::TrafficServer::bind(std::string const &address)
@@ -45,6 +77,10 @@ bool traffic::TrafficServer::bind(std::string const &address)
 bool traffic::TrafficServer::start_worker(WorkerBase * worker)
 {
 	_threads.push_back(std::thread([&] () { worker->run(*_context); }));
+
+	std::unique_lock<std::mutex> lk(worker->_setup_mutex);
+	worker->_cv.wait(lk, [ & ] () { return worker->_setup_done; });
+	lk.unlock();
 	return true;
 }
 

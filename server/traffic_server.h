@@ -5,6 +5,8 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <mutex>
+#include <condition_variable>
 
 
 #define WORKER_PORT "inproc://workers"
@@ -40,6 +42,10 @@ public:
 	class WorkerBase
 	{
 	private:
+		std::mutex _setup_mutex;
+		std::condition_variable _cv;
+		bool _setup_done;
+
 		void run(zmq::context_t &context);
 
 		WorkerBase(WorkerBase const &) = delete;
@@ -47,6 +53,16 @@ public:
 		operator= (WorkerBase const &) = delete;
 
 	protected:
+		/**
+		 * \brief Setup worker thread.
+		 *
+		 * Implement this to do the setup of the worker (e.g.
+		 * connect to databases). It will be called after the
+		 * thread was started.
+		 *
+		 * \return false in case of error.
+		 */
+		virtual bool set_up() = 0;
 
 		/**
 		 * \brief This is the "work" method.
@@ -58,12 +74,14 @@ public:
 		 * \param result The result of the processing.
 		 * \param data   The data from the received message
 		 * \param size   The size of the received message data.
+		 * \return false in case of error.
 		 */
 		virtual bool process(std::string &result,
 				     void * data,
 				     size_t size) = 0;
 
-		virtual ~WorkerBase() { }
+		WorkerBase();
+		virtual ~WorkerBase();
 
 		friend class TrafficServer;
 	};
