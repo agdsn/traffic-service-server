@@ -6,6 +6,28 @@
 #include "traffic_server.h"
 
 
+void traffic::TrafficServer::WorkerBase::run(zmq::context_t &context)
+{
+	zmq::socket_t socket (context, ZMQ_REP);
+	socket.connect (WORKER_PORT);
+
+	while (true) {
+		zmq::message_t request;
+		socket.recv (&request);
+
+		std::string result;
+		if (!process(result, request.data(), request.size()))
+			std::cerr << "Error processing message of "
+				  << request.size() << " bytes!";
+
+		zmq::message_t response(result.size());
+		memcpy(response.data(), result.c_str(), result.size());
+
+		socket.send(response);
+	}
+}
+
+
 bool traffic::TrafficServer::bind(std::string const &address)
 {
 	try {
@@ -16,6 +38,13 @@ bool traffic::TrafficServer::bind(std::string const &address)
 		          << e.what() << std::endl;
 		return false;
 	}
+	return true;
+}
+
+
+bool traffic::TrafficServer::start_worker(WorkerBase * worker)
+{
+	_threads.push_back(std::thread([&] () { worker->run(*_context); }));
 	return true;
 }
 
