@@ -171,3 +171,25 @@ TEST_F(ServerCommandline, test_storage_invalid) {
 			       "'--storage' is invalid"),
 		  std::string::npos);
 }
+
+
+// Test for sqlite storage type
+TEST_F(ServerCommandline, test_worker_default) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", "-s", "sqlite"};
+
+	EXPECT_TRUE(cmd.parse(3, argv));
+
+	EXPECT_EQ(cmd.worker(), 2U);
+}
+
+
+// Test for sqlite storage type
+TEST_F(ServerCommandline, test_worker_count) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", "-s", "sqlite", "-w", "5"};
+
+	EXPECT_TRUE(cmd.parse(5, argv));
+
+	EXPECT_EQ(cmd.worker(), 5U);
+}
