@@ -41,6 +41,11 @@ public:
 	 */
 	std::vector<std::string> addresses() const;
 
+	/**
+	 * \brief Give the configured storage type.
+	 *
+	 * The storage type set per commandline option.
+	 */
 	StorageType storage_type() const;
 
 	/**
