@@ -25,7 +25,7 @@ First make all requirements available, then:
     $ cmake .. -DCMAKE_BUILD_TYPE=Debug
     $ make
 
-## Run Unuttests
+## Run Unittests
 
 Within the `build` directory do:
 
