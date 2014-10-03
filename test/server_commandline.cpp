@@ -61,9 +61,9 @@ TEST_F(ServerCommandline, test_help) {
 // Test if default bind works
 TEST_F(ServerCommandline, test_bind_default) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar"};
+	const char* argv[] = {"foobar", "-s", "sqlite"};
 
-	EXPECT_TRUE(cmd.parse(1, argv));
+	EXPECT_TRUE(cmd.parse(3, argv));
 
 	std::vector<std::string> addr(cmd.addresses());
 	EXPECT_EQ(addr.size(), 1U);
@@ -74,9 +74,9 @@ TEST_F(ServerCommandline, test_bind_default) {
 // Test if we can bind a single address
 TEST_F(ServerCommandline, test_bind_single) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-b", "abcde"};
+	const char* argv[] = {"foobar", "-b", "abcde", "-s", "sqlite"};
 
-	EXPECT_TRUE(cmd.parse(3, argv));
+	EXPECT_TRUE(cmd.parse(5, argv));
 
 	std::vector<std::string> addr(cmd.addresses());
 	EXPECT_EQ(addr.size(), 1U);
@@ -90,9 +90,10 @@ TEST_F(ServerCommandline, test_bind_multi) {
 	const char* argv[] = {"foobar",
 		"-b", "abcde",
 		"--bind", "1234",
-		"-b", "12ab"};
+		"-b", "12ab",
+		"-s", "sqlite"};
 
-	EXPECT_TRUE(cmd.parse(7, argv));
+	EXPECT_TRUE(cmd.parse(9, argv));
 
 	std::vector<std::string> addr(cmd.addresses());
 	EXPECT_EQ(addr.size(), 3U);
@@ -105,9 +106,9 @@ TEST_F(ServerCommandline, test_bind_multi) {
 // Test if we get an error if bind arg is omitted
 TEST_F(ServerCommandline, test_bind_missing) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-b"};
+	const char* argv[] = {"foobar", "-s", "sqlite", "-b"};
 
-	EXPECT_FALSE(cmd.parse(2, argv));
+	EXPECT_FALSE(cmd.parse(4, argv));
 	EXPECT_NE(error().find("the required argument for "
 			       "option '--bind' is missing"),
 		  std::string::npos);
