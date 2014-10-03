@@ -46,8 +46,10 @@ called `CMAKE_INSTALL_PREFIX:PATH`:
 
     -h [ --help ]               Print help message.
     -b [ --bind ] arg (=*:3444) address:port combinations to bind to
+    -w [ --worker ] arg (=2)    Number of workers to spawn
     -s [ --storage ] arg        Specify the backend storage type (sqlite, mysql, 
                                 postgres)
+
 
 ## Contributing
 
