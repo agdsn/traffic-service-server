@@ -129,6 +129,16 @@ public:
 	 */
 	void run();
 
+	/**
+	 * \brief Stop the traffic server.
+	 *
+	 * This shuts the server down. It is mainly used by the
+	 * unittests and should not used in the main code.
+	 *
+	 * There is no way to recover the server instance after a call
+	 * to stop(). All workers will be dead and the sockets are
+	 * closed!
+	 */
 	void stop();
 
 	TrafficServer();
