@@ -46,6 +46,8 @@ called `CMAKE_INSTALL_PREFIX:PATH`:
 
     -h [ --help ]               Print help message.
     -b [ --bind ] arg (=*:3444) address:port combinations to bind to
+    -s [ --storage ] arg        Specify the backend storage type (sqlite, mysql, 
+                                postgres)
 
 ## Contributing
 
