@@ -42,6 +42,14 @@ public:
 	std::vector<std::string> addresses() const;
 
 	/**
+	 * \brief workers to spawn.
+	 *
+	 * Give the mumber of workers to spawn as specified at the
+	 * commandline.
+	 */
+	unsigned int worker() const;
+
+	/**
 	 * \brief Give the configured storage type.
 	 *
 	 * The storage type set per commandline option.

@@ -7,6 +7,7 @@
 
 
 #define DEFAULT_CONNECTION "*:3444"
+#define DEFAULT_WORKER     2U
 
 
 namespace traffic {
@@ -23,6 +24,17 @@ traffic::Commandline::addresses() const
 	if (! _vm.count("bind"))
 		return std::vector<std::string>(1, DEFAULT_CONNECTION);
 	return _vm["bind"].as<std::vector<std::string> >();
+}
+
+
+unsigned int
+traffic::Commandline::worker() const
+{
+	BOOST_ASSERT(_vm.count("worker") && "No worker count specified");
+
+	if (! _vm.count("worker"))
+		return DEFAULT_WORKER;
+	return _vm["worker"].as<unsigned int>();
 }
 
 
@@ -71,6 +83,8 @@ traffic::Commandline::Commandline()
 				DEFAULT_CONNECTION)
 			->composing(),
 		 "address:port combinations to bind to")
+		("worker,w", po::value<unsigned int>()->default_value(2),
+		 "Number of workers to spawn")
 		("storage,s", po::value<StorageType>()->required(),
 		 "Specify the backend storage type (sqlite, mysql, postgres)")
 		;
