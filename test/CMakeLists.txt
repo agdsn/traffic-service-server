@@ -3,10 +3,7 @@ file(GLOB test_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 add_subdirectory(gtest)
 
-
-
 add_executable(runUnitTests ${test_SOURCES})
-
 
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 target_link_libraries(runUnitTests gtest gtest_main)

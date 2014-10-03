@@ -31,6 +31,15 @@
 import os
 import ycm_core
 
+
+def DirectoryOfThisScript():
+  return os.path.dirname( os.path.abspath( __file__ ) )
+
+
+def include_subdir(name):
+    return "-I%s/%s" % (DirectoryOfThisScript(), name)
+
+
 # These are the compilation flags that will be used in case there's no
 # compilation database set (by default, one is not set).
 # CHANGE THIS LIST OF FLAGS. YES, THIS IS THE DROID YOU HAVE BEEN LOOKING FOR.
@@ -43,8 +52,11 @@ flags = [
 '-std=c++11',
 '-x',
 'c++',
+include_subdir('server'),
+include_subdir('messages'),
+include_subdir('backend'),
+include_subdir('test/gtest/include'),
 ]
-
 
 # Set this to the absolute path to the folder (NOT the file!) containing the
 # compile_commands.json file to use that instead of 'flags'. See here for
@@ -64,9 +76,6 @@ else:
   database = None
 
 SOURCE_EXTENSIONS = [ '.cpp', '.cxx', '.cc', '.c', '.m', '.mm' ]
-
-def DirectoryOfThisScript():
-  return os.path.dirname( os.path.abspath( __file__ ) )
 
 
 def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
