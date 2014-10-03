@@ -7,6 +7,7 @@ target_link_libraries(traffic_service_lib messages)
 target_link_libraries(traffic_service_lib backend)
 
 target_link_libraries(traffic_service_lib ${ZMQ_LIBRARIES})
+target_link_libraries(traffic_service_lib ${CMAKE_THREAD_LIBS_INIT})
 
 target_include_directories(traffic_service_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

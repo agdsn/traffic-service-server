@@ -12,7 +12,7 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 
 find_package(Protobuf REQUIRED)
 
-
+find_package(Threads)
 
 find_package(PkgConfig)
 pkg_check_modules(PC_ZMQ REQUIRED libzmq>=3.0)
