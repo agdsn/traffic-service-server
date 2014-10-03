@@ -37,10 +37,6 @@ public:
 
 // Test if the basic worker communication work.
 TEST(ServerTrafficServer, test_bind_worker) {
-	std::mutex m;
-	std::condition_variable cv;
-
-
 	TestWorker w;
 	traffic::TrafficServer server;
 	server.bind(TEST_ADDRESS);
