@@ -113,3 +113,61 @@ TEST_F(ServerCommandline, test_bind_missing) {
 			       "option '--bind' is missing"),
 		  std::string::npos);
 }
+
+
+// Test missing storage type
+TEST_F(ServerCommandline, test_missing_storage_type) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar"};
+
+	EXPECT_FALSE(cmd.parse(1, argv));
+	EXPECT_NE(error().find("the option '--storage' "
+			       "is required but missing"),
+		  std::string::npos);
+}
+
+
+// Test for sqlite storage type
+TEST_F(ServerCommandline, test_storage_sqlite) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", "-s", "sqlite"};
+
+	EXPECT_TRUE(cmd.parse(3, argv));
+
+	EXPECT_EQ(cmd.storage_type(), traffic::Commandline::SQLITE);
+}
+
+
+// Test for mysql storage type
+TEST_F(ServerCommandline, test_storage_mysql) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", "-s", "mysql"};
+
+	EXPECT_TRUE(cmd.parse(3, argv));
+
+	EXPECT_EQ(cmd.storage_type(), traffic::Commandline::MYSQL);
+}
+
+
+// Test for postgres storage type
+TEST_F(ServerCommandline, test_storage_postgres) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", "-s", "postgres"};
+
+	EXPECT_TRUE(cmd.parse(3, argv));
+
+	EXPECT_EQ(cmd.storage_type(), traffic::Commandline::POSTGRES);
+}
+
+
+// Test for invalid storage type
+TEST_F(ServerCommandline, test_storage_invalid) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", "-s", "peng"};
+
+	EXPECT_FALSE(cmd.parse(3, argv));
+
+	EXPECT_NE(error().find("the argument for option "
+			       "'--storage' is invalid"),
+		  std::string::npos);
+}
