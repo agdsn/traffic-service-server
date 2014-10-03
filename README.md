@@ -49,6 +49,8 @@ called `CMAKE_INSTALL_PREFIX:PATH`:
     -w [ --worker ] arg (=2)    Number of workers to spawn
     -s [ --storage ] arg        Specify the backend storage type (sqlite, mysql, 
                                 postgres)
+    -I [ --table_in ] arg       The database table name for incomming traffic
+    -O [ --table_out ] arg      The database table name for outgoing traffic
 
 
 ## Contributing
