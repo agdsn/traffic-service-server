@@ -25,6 +25,23 @@ First make all requirements available, then:
     $ cmake .. -DCMAKE_BUILD_TYPE=Debug
     $ make
 
+## Run Unuttests
+
+Within the `build` directory do:
+
+    $ make all test
+
+## Installation
+
+Within the `build` directory do:
+
+    $ make all install
+
+You can choose the installation prefix by a Cmake variable
+called `CMAKE_INSTALL_PREFIX:PATH:
+
+    $ cmake -DCMAKE_INSTALL_PREFIX:PATH=../run
+
 ## Commandline options
 
     -h [ --help ]               Print help message.
