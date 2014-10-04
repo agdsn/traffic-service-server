@@ -49,6 +49,36 @@ traffic::Commandline::storage_type() const
 }
 
 
+std::string traffic::Commandline::table_incomming() const
+{
+	BOOST_ASSERT(_vm.count("table_in") && "No incomming table specified!");
+
+	if (! _vm.count("table_in"))
+		return "";
+	return _vm["table_in"].as<std::string>();
+}
+
+
+std::string traffic::Commandline::table_outgoing() const
+{
+	BOOST_ASSERT(_vm.count("table_out") && "No outgoing table specified!");
+
+	if (! _vm.count("table_out"))
+		return "";
+	return _vm["table_out"].as<std::string>();
+}
+
+
+std::string traffic::Commandline::sqlite_file() const
+{
+	BOOST_ASSERT(_vm.count("sqlite_file") && "No sqlite file specified!");
+
+	if (! _vm.count("sqlite_file"))
+		return "";
+	return _vm["sqlite_file"].as<std::string>();
+}
+
+
 bool traffic::Commandline::parse(int argc, char const *argv[])
 {
 	try {

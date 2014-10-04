@@ -57,6 +57,21 @@ public:
 	StorageType storage_type() const;
 
 	/**
+	 * \brief Name of the incomming tradffic table.
+	 */
+	std::string table_incomming() const;
+
+	/**
+	 * \brief Name of the outgoing traffic table.
+	 */
+	std::string table_outgoing() const;
+
+	/**
+	 * \brief Name of the sqlite database file.
+	 */
+	std::string sqlite_file() const;
+
+	/**
 	 * \brief Parse the commandline arguments.
 	 *
 	 * This parses the argv array to get all the arguments. It
