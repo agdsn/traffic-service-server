@@ -133,13 +133,25 @@ TEST_F(ServerCommandline, test_missing_storage_type) {
 
 // Test for sqlite storage type
 TEST_F(ServerCommandline, test_storage_sqlite) {
-	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", REQUIRED_TABLES,
-		              "-s", "sqlite", "--sqlite_file", "ab"};
+	{
+		traffic::Commandline cmd;
+		const char* argv[] = {"foobar", REQUIRED_TABLES,
+				      "-s", "sqlite", "--sqlite_file", "ab"};
 
-	EXPECT_TRUE(cmd.parse(5 + 4, argv));
+		EXPECT_TRUE(cmd.parse(5 + 4, argv));
+		EXPECT_EQ(cmd.storage_type(), traffic::Commandline::SQLITE);
+		EXPECT_EQ(cmd.sqlite_file(), "ab");
+	}
+	{
+		traffic::Commandline cmd;
+		const char* argv[] = {"foobar", REQUIRED_TABLES,
+				      "-s", "sqlite"};
 
-	EXPECT_EQ(cmd.storage_type(), traffic::Commandline::SQLITE);
+		EXPECT_FALSE(cmd.parse(3 + 4, argv));
+		EXPECT_NE(error().find("option --sqlite_file missing for "
+				       "storage_type sqlite!"),
+			  std::string::npos);
+	}
 }
 
 
@@ -197,4 +209,40 @@ TEST_F(ServerCommandline, test_worker_count) {
 	EXPECT_TRUE(cmd.parse(3 + 4 + 4, argv));
 
 	EXPECT_EQ(cmd.worker(), 5U);
+}
+
+
+// Test output table missing
+TEST_F(ServerCommandline, test_tables_out_missing) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", REQUIRED_STORAGE, "-I", "a"};
+
+	EXPECT_FALSE(cmd.parse(3 + 4, argv));
+	EXPECT_NE(error().find("the option '--table_out' is "
+				"required but missing"),
+			std::string::npos);
+}
+
+
+// Test input table missing
+TEST_F(ServerCommandline, test_tables_in_missing) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", REQUIRED_STORAGE, "-O", "a"};
+
+	EXPECT_FALSE(cmd.parse(3 + 4, argv));
+	EXPECT_NE(error().find("the option '--table_in' is "
+				"required but missing"),
+			std::string::npos);
+}
+
+
+// Test tables
+TEST_F(ServerCommandline, test_tables) {
+	traffic::Commandline cmd;
+	const char* argv[] = {"foobar", REQUIRED_STORAGE,
+			      "-O", "a", "-I", "b"};
+
+	EXPECT_TRUE(cmd.parse(5 + 4, argv));
+	EXPECT_EQ(cmd.table_outgoing(), "a");
+	EXPECT_EQ(cmd.table_incomming(), "b");
 }
