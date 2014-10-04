@@ -95,6 +95,19 @@ bool traffic::Commandline::parse(int argc, char const *argv[])
 		return false;
 	}
 
+	switch (storage_type()) {
+		case SQLITE:
+			if (!_vm.count("sqlite_file")) {
+				std::cerr << "option --sqlite_file missing for "
+					     "storage_type sqlite!"
+					  << std::endl;
+				return false;
+			}
+		case MYSQL:
+		case POSTGRES:
+			break;
+	}
+
 	return true;
 }
 
