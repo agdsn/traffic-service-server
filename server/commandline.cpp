@@ -73,7 +73,8 @@ traffic::Commandline::Commandline()
 :
 	_desc("Traffic query server options")
 {
-	_desc.add_options()
+	po::options_description general("General options");
+	general.add_options()
 		("help,h", "Print help message.")
 		("bind,b",
 		 po::value<std::vector<std::string> >()
@@ -92,6 +93,14 @@ traffic::Commandline::Commandline()
 		("table_out,O", po::value<std::string>()->required(),
 		 "The database table name for outgoing traffic")
 		;
+
+	po::options_description sqlite("SqlLite options");
+	sqlite.add_options()
+		("sqlite_file", po::value<std::string>(),
+		 "Database file")
+		;
+
+	_desc.add(general).add(sqlite);
 }
 
 
