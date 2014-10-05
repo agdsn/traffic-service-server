@@ -11,15 +11,40 @@ To compile this you need:
 * ZeroMQ
 * Boost.Program_options
 
-## How to build
-
-First make all requirements available, then:
+## How to Clone
 
     $ git clone git@github.com:agdsn/traffic-service-server.git
     $ cd traffic-service-server
     $ git submodule init
     $ git submodule update
     
+## How to Update (the source tree)
+
+We use submodules within the project, so updating the source
+tree is not every time only a simple `git pull --rebase`. If
+a submodule have changed you ge something like:
+
+    $ git status
+    On branch master
+    Your branch is up-to-date with 'origin/master'.
+    Changes not staged for commit:
+      (use "git add <file>..." to update what will be committed)
+      (use "git checkout -- <file>..." to discard changes in working directory)
+    
+            modified:   messages/proto (new commits)
+    
+    no changes added to commit (use "git add" and/or "git commit -a")
+
+Then you have to do a `git submodule update`. I recommend to
+read the 
+[git submodule documentation](http://git-scm.com/book/de/Git-Tools-Submodule)
+for better understanding what submodules mean and how to
+handle them.
+
+## How to Build
+
+First make all requirements available, then:
+
     $ mkdir build
     $ cd build
     $ cmake .. -DCMAKE_BUILD_TYPE=Debug
