@@ -20,9 +20,9 @@ To compile this you need:
     
 ## How to Update (the source tree)
 
-We use submodules within the project, so updating the source
-tree is not every time only a simple `git pull --rebase`. If
-a submodule have changed you ge something like:
+We use submodules within the project, so updating the source tree is 
+not every time only a simple `git pull --rebase`. If a submodule have 
+changed you ge something like:
 
     $ git status
     On branch master
@@ -35,15 +35,13 @@ a submodule have changed you ge something like:
     
     no changes added to commit (use "git add" and/or "git commit -a")
 
-Then you have to do a `git submodule update`. I recommend to
-read the 
+Then you have to do a `git submodule update`. I recommend to read the 
 [git submodule documentation](http://git-scm.com/book/de/Git-Tools-Submodule)
-for better understanding what submodules mean and how to
-handle them.
+for better understanding what submodules mean and how to handle them.
 
 ## How to Build
 
-First make all requirements available, then:
+First make all requirements available, then chdir into source root and:
 
     $ mkdir build
     $ cd build
@@ -62,8 +60,8 @@ Within the `build` directory do:
 
     $ make all install
 
-You can choose the installation prefix by a Cmake variable
-called `CMAKE_INSTALL_PREFIX:PATH`:
+You can choose the installation prefix by a Cmake variable called
+`CMAKE_INSTALL_PREFIX:PATH`:
 
     $ cmake -DCMAKE_INSTALL_PREFIX:PATH=../run
 
@@ -80,6 +78,6 @@ called `CMAKE_INSTALL_PREFIX:PATH`:
 
 ## Contributing
 
-As long as this is developed by a single person (me) I will push
-directly to this repository. When someone want to join, we should
+As long as this is developed by a single person (me) I will push 
+directly to this repository. When someone want to join, we should 
 clone our personal copies and synchronize via pull-requensts.
