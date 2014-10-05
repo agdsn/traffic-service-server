@@ -56,6 +56,7 @@ include_subdir('server'),
 include_subdir('messages'),
 include_subdir('backend'),
 include_subdir('test/gtest/include'),
+include_subdir('build/messages/'),
 ]
 
 # Set this to the absolute path to the folder (NOT the file!) containing the
