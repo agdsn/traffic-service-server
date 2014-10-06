@@ -12,12 +12,16 @@ bool traffic::MessageWorker::process(std::string &result, void *data, size_t siz
 	request::Request request;
 	request.ParseFromArray(data, size);
 
-	if (request.has_statistic())
-		return process_statistics();
-	else if (request.has_summary())
-		return process_summary();
+	switch (request.Payload_case()) {
+		case request::Request::kStatistic:
+			return process_statistics();
+		case request::Request::kSummary:
+			return process_summary();
+		case request::Request::PAYLOAD_NOT_SET:
+			return false;
+	}
 
-	BOOST_ASSERT(false && "Unknown message type");
+	BOOST_ASSERT(false && "Message parsing failed!");
 
 	return false;
 }
