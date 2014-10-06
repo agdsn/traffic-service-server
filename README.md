@@ -81,3 +81,24 @@ You can choose the installation prefix by a Cmake variable called
 As long as this is developed by a single person (me) I will push 
 directly to this repository. When someone want to join, we should 
 clone our personal copies and synchronize via pull-requensts.
+
+# Common errors
+
+## Missing submodules
+
+If you have a version checked out from before a specific submodule was
+used the new module will not automatically initializes with a
+`git submodule update`. The error in this case is for example:
+
+    CMake Error at test/CMakeLists.txt:4 (add_subdirectory):
+      The source directory
+    
+        /home/jan/devel/traffic-service-server/test/gtest
+    
+      does not contain a CMakeLists.txt file.
+
+To solve this you have to inizialize the missing submodule first by
+executing `git submodule init` and then update it using `git submodule
+update`. At this point I recommend again to read the 
+[git submodule documentation](http://git-scm.com/book/de/Git-Tools-Submodule).
+
