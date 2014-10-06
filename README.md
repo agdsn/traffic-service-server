@@ -6,10 +6,15 @@ This is a simple server to query traffic accounting data.
 
 To compile this you need:
 
-* Cmake
-* Google Protobuf
-* ZeroMQ
-* Boost.Program_options
+* Cmake (3.0.2)
+* Google Protobuf (2.6.0)
+* ZeroMQ (4.0.4)
+* Boost.Program_options (1.55.0.2)
+
+The current target is a Debian jessie (testing). The given versions
+are tested versions. This does not mean that this are the only working
+ones. To test your setup clone the project, compile it and run the
+unittests.
 
 ## How to Clone
 
