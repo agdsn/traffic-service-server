@@ -37,12 +37,12 @@ public:
 TEST(ServerMessageWorker, basic_message_worker) {
 	TestMessageWorker w;
 
-	request::Request request;
+	requests::Request request;
 	request.set_version(1);
 
-	request::Statistic *stat = request.mutable_statistic();
+	requests::Statistic *stat = request.mutable_statistic();
 
-	request::TimeRange *range = stat->mutable_range();
+	common::TimeRange *range = stat->mutable_range();
 
 	range->set_start(1);
 	range->set_end(2);

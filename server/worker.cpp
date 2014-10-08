@@ -9,15 +9,15 @@ bool traffic::MessageWorker::process(std::string &result, void *data, size_t siz
 {
 	(void) result;
 
-	request::Request request;
+	requests::Request request;
 	request.ParseFromArray(data, size);
 
 	switch (request.Payload_case()) {
-		case request::Request::kStatistic:
+		case requests::Request::kStatistic:
 			return process_statistics();
-		case request::Request::kSummary:
+		case requests::Request::kSummary:
 			return process_summary();
-		case request::Request::PAYLOAD_NOT_SET:
+		case requests::Request::PAYLOAD_NOT_SET:
 			return false;
 	}
 
