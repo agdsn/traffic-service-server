@@ -87,9 +87,9 @@ As long as this is developed by a single person (me) I will push
 directly to this repository. When someone want to join, we should 
 clone our personal copies and synchronize via pull-requensts.
 
-# Common errors
+## Common errors
 
-## Missing submodules
+### Missing submodules
 
 If you have a version checked out from before a specific submodule was
 used the new module will not automatically initializes with a
