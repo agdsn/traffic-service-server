@@ -87,6 +87,9 @@ As long as this is developed by a single person (me) I will push
 directly to this repository. When someone want to join, we should 
 clone our personal copies and synchronize via pull-requensts.
 
+To find some work to do yust look at the issues of the project on
+[github](https://github.com/agdsn/traffic-service-server).
+
 ## Common errors
 
 ### Missing submodules
