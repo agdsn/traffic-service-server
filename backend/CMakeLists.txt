@@ -1,3 +1,3 @@
-file(GLOB server_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+file(GLOB backend_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
-add_library(backend STATIC ${server_SOURCES})
+add_library(backend STATIC ${backend_SOURCES})
