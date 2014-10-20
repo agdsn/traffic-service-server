@@ -9,4 +9,5 @@ add_library(messages STATIC ${ProtoSources}
 
 target_link_libraries(messages ${Boost_LIBRARIES} ${PROTOBUF_LIBRARY})
 
-target_include_directories(messages PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(messages PUBLIC ${CMAKE_CURRENT_BINARY_DIR}
+					   ${CMAKE_CURRENT_SOURCE_DIR})
