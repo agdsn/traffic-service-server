@@ -1,6 +1,6 @@
 #include "replies.pb.h"
 
-#include "reply.h"
+#include "reply_message.h"
 
 void traffic::ReplyMessage::serialize(std::string &output) const
 {
