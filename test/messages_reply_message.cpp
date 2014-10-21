@@ -99,3 +99,21 @@ TEST(MessagesReply, error_message_test) {
 	EXPECT_EQ(err.code(), 2U);
 	EXPECT_EQ(err.reason(), "TestPeng");
 }
+
+/**
+ * Shut down the protobuf library after the tests to make valgrind happy
+ */
+namespace {
+
+class ShutdownEnvironment : public ::testing::Environment
+{
+public:
+	void TearDown()
+	{
+		google::protobuf::ShutdownProtobufLibrary();
+	}
+};
+
+::testing::Environment* const shutdown_env =
+	::testing::AddGlobalTestEnvironment(new ShutdownEnvironment);
+}
