@@ -20,6 +20,10 @@ find_library(ZMQ_LIBRARIES NAMES zmq libzmq
              HINTS ${PC_ZMQ_LIBDIR} ${PC_ZMQ_LIBRARY_DIRS})
 
 
+set(CTEST_MEMORYCHECK_SUPPRESSIONS_FILE
+	${CTEST_SOURCE_DIRECTORY}/test/valgrind/zeromq.supp)
+set(CTEST_MEMORYCHECK_COMMAND "/usr/bin/valgrind")
+include(CTest)
 enable_testing()
 
 add_subdirectory(messages)
