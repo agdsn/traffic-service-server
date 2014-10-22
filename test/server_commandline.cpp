@@ -195,7 +195,7 @@ TEST_F(ServerCommandline, test_worker_default) {
 	traffic::Commandline cmd;
 	const char* argv[] = {"foobar", REQUIRED};
 
-	EXPECT_TRUE(cmd.parse(3 + 4 + 4, argv));
+	EXPECT_TRUE(cmd.parse(1 + 4 + 4, argv));
 
 	EXPECT_EQ(cmd.worker(), 2U);
 }
