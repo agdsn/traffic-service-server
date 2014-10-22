@@ -114,7 +114,8 @@ bool traffic::Commandline::parse(int argc, char const *argv[])
 
 traffic::Commandline::Commandline()
 :
-	_desc("Traffic query server options")
+	_desc("Traffic query server options"),
+	_vm()
 {
 	po::options_description general("General options");
 	general.add_options()
