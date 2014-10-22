@@ -13,3 +13,11 @@ target_link_libraries(runUnitTests backend)
 
 
 add_test(NAME unittests COMMAND runUnitTests)
+
+add_custom_target(test_memcheck COMMAND
+	valgrind --leak-check=full
+	         --show-reachable=no
+		 --track-fds=yes
+		 --error-exitcode=1
+		 --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind/zeromq.supp
+		 ${CMAKE_CURRENT_BINARY_DIR}/runUnitTests)
