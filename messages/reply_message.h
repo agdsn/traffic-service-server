@@ -1,5 +1,5 @@
-#ifndef __MESSAGES__REPLY_H__
-#define __MESSAGES__REPLY_H__
+#ifndef __MESSAGES__REPLY_MESSAGE_H__
+#define __MESSAGES__REPLY_MESSAGE_H__
 
 #include <string>
 #include <memory>
