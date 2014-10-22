@@ -59,6 +59,10 @@ Within the `build` directory do:
 
     $ make all test
 
+There is also a target to tun the tests under valgrind memcheck:
+
+    $ make all test_memcheck
+
 ## Installation
 
 Within the `build` directory do:
