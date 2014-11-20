@@ -7,7 +7,7 @@ before_install:
     # Add software package repository, containing updated build toochain, i.e. GNU GCC 4.8
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test --yes
   - sudo apt-add-repository ppa:boost-latest/ppa --yes
-  - sudo apt-add-repository ppa:chris-lea:zeromq --yes
+  - sudo apt-add-repository ppa:chris-lea/zeromq --yes
   - sudo add-apt-repository ppa:kalakris/cmake --yes
   - sudo apt-get update -qq
 
