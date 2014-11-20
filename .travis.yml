@@ -9,6 +9,7 @@ before_install:
   - sudo apt-add-repository ppa:boost-latest/ppa --yes
   - sudo apt-add-repository ppa:chris-lea/zeromq --yes
   - sudo add-apt-repository ppa:kalakris/cmake --yes
+  - sudo add-apt-repository ppa:packetlost/cmake --yes
   - sudo apt-get update -qq
 
 install:
