@@ -19,7 +19,7 @@ install:
   - mkdir build && cd build
 
 script:
-  - cmake .. -DCMAKE_BUILD_TYPE=Debug
+  - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX:PATH=../run
   - make all
   - make test
   - make test_memcheck
