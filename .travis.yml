@@ -9,11 +9,11 @@ before_install:
   - sudo apt-add-repository ppa:boost-latest/ppa --yes
   - sudo apt-add-repository ppa:chris-lea/zeromq --yes
   - sudo add-apt-repository ppa:kalakris/cmake --yes
-  - sudo add-apt-repository ppa:packetlost/cmake --yes
+  - sudo add-apt-repository ppa:andykimpe/cmake3 --yes
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -q libboost-program-options1.55-dev g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake
+  - sudo apt-get install -q libboost-program-options1.55-dev g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake3
   - export CXX="g++-4.9" CC="gcc-4.9"
   - git submodule init
   - git submodule update
