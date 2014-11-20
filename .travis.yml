@@ -13,7 +13,8 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -q libboost-program-options1.55-dev g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake3
+  - sudo apt-get install -q libboost-program-options1.55-dev g++-4.9 gcc-4.9 libzmq3-dev valgrind
+  - sudo apt-get install cmake3 > /dev/null
   - export CXX="g++-4.9" CC="gcc-4.9"
   - git submodule init
   - git submodule update
