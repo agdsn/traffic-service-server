@@ -5,23 +5,30 @@ compiler:
 
 env:
   - PROTOBUF_VERSION=2.6.0
+  - BOOST_VERSION=1.55.0
 
 before_install:
     # Add software package repository, containing updated build toochain, i.e. GNU GCC 4.8
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test --yes
-  - sudo apt-add-repository ppa:boost-latest/ppa --yes
   - sudo apt-add-repository ppa:chris-lea/zeromq --yes
   - sudo add-apt-repository ppa:kalakris/cmake --yes
   - sudo apt-get update -qq
+  - wget --no-verbose --output-document=boost-trunk.tar.bz2 http://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/boost_${BOOST_VERSION//\./_}.tar.bz2/download
+  - export BOOST_ROOT="$TRAVIS_BUILD_DIR/../boost-build"
+  - mkdir -p $BOOST_ROOT
+  - tar jxf boost-trunk.tar.bz2 --strip-components=1 -C $BOOST_ROOT
+  - export PROTO_ROOT="$TRAVIS_BUILD_DIR/../proto-build"
+  - wget https://github.com/google/protobuf/releases/download/v$PROTOBUF_VERSION/protobuf-$PROTOBUF_VERSION.tar.gz
+  - mkdir $PROTO_ROOT
+  - tar zxf protobuf-$PROTOBUF_VERSION.tar.gz --strip-components=1 -C $PROTO_ROOT
+
 
 install:
-  - sudo apt-get install -q libboost-program-options1.54-dev libboost1.54-dev libboost-exception1.54-dev g++-4.8 gcc-4.8 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev
+  - sudo apt-get install -q g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev
   - export CXX="g++-4.8" CC="gcc-4.8"
-  - dpkg -l | grep boost
-  - mkdir proto_build && cd proto_build
-  - wget https://github.com/google/protobuf/releases/download/v$PROTOBUF_VERSION/protobuf-$PROTOBUF_VERSION.tar.gz
-  - tar xf protobuf-$PROTOBUF_VERSION.tar.gz
-  - ( cd protobuf-$PROTOBUF_VERSION && ./configure && (make -j2 > build.log 2>&1 || cat build.log) && sudo make install && sudo ldconfig )
+  - ( cd $BOOST_ROOT; ./bootstrap.sh --with-libraries=program-options )
+  - ( cd $BOOST_ROOT; sudo ./b2 threading=multi -d0 install )
+  - ( cd $PROTO_ROOT && ./configure && (make -j2 > build.log 2>&1 || cat build.log) && sudo make install && sudo ldconfig )
   - cd ..
   - git submodule init
   - git submodule update
