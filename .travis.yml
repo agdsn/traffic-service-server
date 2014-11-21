@@ -15,9 +15,8 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - dpkg -l | grep boost && /bin/false
-  - sudo apt-get install -q libboost-program-options1.55-dev g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev
-  - export CXX="g++-4.9" CC="gcc-4.9"
+  - sudo apt-get install -q libboost-program-options1.55-dev g++-4.8 gcc-4.8 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev
+  - export CXX="g++-4.8" CC="gcc-4.8"
   - mkdir proto_build && cd proto_build
   - wget https://github.com/google/protobuf/releases/download/v$PROTOBUF_VERSION/protobuf-$PROTOBUF_VERSION.tar.gz
   - tar xf protobuf-$PROTOBUF_VERSION.tar.gz
