@@ -27,7 +27,6 @@ install:
   - ( cd $BOOST_ROOT; ./bootstrap.sh --with-libraries=program_options > build.log 2>&1 || cat build.log )
   - ( cd $BOOST_ROOT; sudo ./b2 threading=multi -d0 install )
   - ( cd $PROTO_ROOT && ./configure && (make -j2 > build.log 2>&1 || cat build.log) && sudo make install && sudo ldconfig )
-  - cd ..
   - git submodule init
   - git submodule update
   - mkdir build && cd build
