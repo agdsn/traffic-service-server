@@ -3,9 +3,12 @@ language: cpp
 compiler:
   - gcc
 
+env:
+  global:
+    - PROTOBUF_VERSION=2.6.0
+    - BOOST_VERSION=1.55.0
+
 before_install:
-  - export PROTOBUF_VERSION=2.6.0
-  - export BOOST_VERSION=1.55.0
     # Add software package repository, containing updated build toochain, i.e. GNU GCC 4.8
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test --yes
   - sudo apt-add-repository ppa:chris-lea/zeromq --yes
