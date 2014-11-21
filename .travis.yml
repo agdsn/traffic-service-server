@@ -3,11 +3,9 @@ language: cpp
 compiler:
   - gcc
 
-env:
-  - PROTOBUF_VERSION=2.6.0
-  - BOOST_VERSION=1.55.0
-
 before_install:
+  - export PROTOBUF_VERSION=2.6.0
+  - export BOOST_VERSION=1.55.0
     # Add software package repository, containing updated build toochain, i.e. GNU GCC 4.8
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test --yes
   - sudo apt-add-repository ppa:chris-lea/zeromq --yes
@@ -26,7 +24,7 @@ before_install:
 install:
   - sudo apt-get install -q g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev
   - export CXX="g++-4.8" CC="gcc-4.8"
-  - ( cd $BOOST_ROOT; ./bootstrap.sh --with-libraries=program-options )
+  - ( cd $BOOST_ROOT; ./bootstrap.sh --with-libraries=program-options > build.log 2>&1 || cat build.log )
   - ( cd $BOOST_ROOT; sudo ./b2 threading=multi -d0 install )
   - ( cd $PROTO_ROOT && ./configure && (make -j2 > build.log 2>&1 || cat build.log) && sudo make install && sudo ldconfig )
   - cd ..
