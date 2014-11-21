@@ -36,5 +36,5 @@ install:
 script:
   - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX:PATH=../run
   - make all
-  - make test
+  - make test || cat Testing/Temporary/LastTest.log
   - make test_memcheck
