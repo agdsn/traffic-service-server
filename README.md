@@ -1,5 +1,7 @@
 # Traffic accounting service
 
+[![Build Status](https://travis-ci.org/agdsn/traffic-service-server.svg?branch=master)](https://travis-ci.org/agdsn/traffic-service-server)
+
 This is a simple server to query traffic accounting data.
 
 ## Requirements
