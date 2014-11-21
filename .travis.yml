@@ -3,6 +3,9 @@ language: cpp
 compiler:
   - gcc
 
+env:
+  - PROTOBUF_VERSION=2.6.0
+
 before_install:
     # Add software package repository, containing updated build toochain, i.e. GNU GCC 4.8
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test --yes
@@ -14,6 +17,11 @@ before_install:
 install:
   - sudo apt-get install -q libboost-program-options1.55-dev g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev
   - export CXX="g++-4.9" CC="gcc-4.9"
+  - mkdir proto_build && cd proto_build
+  - wget https://github.com/google/protobuf/releases/download/v$PROTOBUF_VERSION/protobuf-$PROTOBUF_VERSION.tar.gz
+  - tar xf protobuf-$PROTOBUF_VERSION.tar.gz
+  - ( cd protobuf-$PROTOBUF_VERSION && ./configure && make -j2 && sudo make install && sudo ldconfig )
+  - cd ..
   - git submodule init
   - git submodule update
   - mkdir build && cd build
