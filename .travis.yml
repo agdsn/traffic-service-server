@@ -24,6 +24,8 @@ before_install:
 install:
   - sudo apt-get install -q g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev
   - export CXX="g++-4.9" CC="gcc-4.9"
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 90
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 90
   - ( cd $BOOST_ROOT; ./bootstrap.sh --with-libraries=program_options > build.log 2>&1 || cat build.log )
   - ( cd $BOOST_ROOT; sudo ./b2 threading=multi -d0 install )
   - ( cd $PROTO_ROOT && ./configure && (make -j2 > build.log 2>&1 || cat build.log) && sudo make install && sudo ldconfig )
