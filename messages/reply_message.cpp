@@ -1,4 +1,4 @@
-#include <boost/assert.hpp>
+#include <iostream>
 
 #include "replies.pb.h"
 #include "reply_message.h"
@@ -48,9 +48,10 @@ traffic::StatisticReply::add_slice(time_t timestamp,
 void
 traffic::StatisticReply::available_interval(TimeRange const &range)
 {
-	BOOST_ASSERT(range.valid() && "Given range not valid");
-	if (! range.valid())
+	if (! range.valid()) {
+		std::cerr << "Invalid TimeRange - ignore it." << std::endl;
 		return;
+	}
 
 	common::TimeRange * range_msg(
 			_statistic_msg->mutable_available_range());
