@@ -83,6 +83,56 @@ TEST(MessagesReply, statistic_reply_test) {
 }
 
 
+// test Statistic message range generation
+TEST(MessagesReply, statistic_reply_range_test) {
+	std::string bytes;
+
+	{
+		traffic::StatisticReply msg(1U, 2U, 3U);
+
+		msg.serialize(bytes);
+
+		replies::Reply rep;
+		rep.ParseFromString(bytes);
+
+		ASSERT_EQ(rep.Payload_case(), replies::Reply::kStatistic);
+		replies::Statistic const &stat(rep.statistic());
+
+		EXPECT_FALSE(stat.has_available_range());
+	}
+	{
+		traffic::StatisticReply msg(1U, 2U, 3U);
+		msg.available_interval(traffic::TimeRange(2U, 1U));
+
+		msg.serialize(bytes);
+
+		replies::Reply rep;
+		rep.ParseFromString(bytes);
+
+		ASSERT_EQ(rep.Payload_case(), replies::Reply::kStatistic);
+		replies::Statistic const &stat(rep.statistic());
+
+		EXPECT_FALSE(stat.has_available_range());
+	}
+	{
+		traffic::StatisticReply msg(1U, 2U, 3U);
+		msg.available_interval(traffic::TimeRange(2U, 3U));
+
+		msg.serialize(bytes);
+
+		replies::Reply rep;
+		rep.ParseFromString(bytes);
+
+		ASSERT_EQ(rep.Payload_case(), replies::Reply::kStatistic);
+		replies::Statistic const &stat(rep.statistic());
+
+		EXPECT_TRUE(stat.has_available_range());
+		EXPECT_EQ(stat.available_range().start(), 2U);
+		EXPECT_EQ(stat.available_range().end(), 3U);
+	}
+}
+
+
 // test error message generation
 TEST(MessagesReply, error_message_test) {
 	std::string bytes;
