@@ -8,10 +8,11 @@ This is a simple server to query traffic accounting data.
 
 To compile this you need:
 
-* Cmake (3.0.2)
-* Google Protobuf (2.6.0)
-* ZeroMQ (4.0.4)
-* Boost.Program_options (1.55.0.2)
+* Cmake (oldest tested version: 2.8.11.2) 
+* Google Protobuf (minimum 2.6.0 because of the `oneof` keyword)
+* ZeroMQ (oldest tested version: 4.0.4)
+* Boost.Program_options (oldest tested version: 1.55.0.2)
+* gcc (oldest tested version: 4.8 - you need C++11 support)
 
 The current target is a Debian jessie (testing). The given versions
 are tested versions. This does not mean that this are the only working
@@ -61,9 +62,17 @@ Within the `build` directory do:
 
     $ make all test
 
-There is also a target to tun the tests under valgrind memcheck:
+There is also a target to tun the tests under valgrind memcheck (you need
+valgrind installed of course):
 
     $ make all test_memcheck
+
+The last line of output from valgrind should contain:
+
+    ERROR SUMMARY: 0 errors from 0 contexts
+
+This means that there are no unsuppressed memory leaks (at least within the
+unittests).
 
 ## Installation
 
