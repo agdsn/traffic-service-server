@@ -1,5 +1,6 @@
-#include "replies.pb.h"
+#include <boost/assert.hpp>
 
+#include "replies.pb.h"
 #include "reply_message.h"
 
 void traffic::ReplyMessage::serialize(std::string &output) const
@@ -41,6 +42,20 @@ traffic::StatisticReply::add_slice(time_t timestamp,
 	slice->set_timestamp(timestamp);
 	slice->set_traffic_in(in);
 	slice->set_traffic_out(out);
+}
+
+
+void
+traffic::StatisticReply::available_interval(TimeRange const &range)
+{
+	BOOST_ASSERT(range.valid() && "Given range not valid");
+	if (! range.valid())
+		return;
+
+	common::TimeRange * range_msg(
+			_statistic_msg->mutable_available_range());
+	range_msg->set_start(range.start());
+	range_msg->set_end(range.end());
 }
 
 

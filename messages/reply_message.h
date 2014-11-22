@@ -4,6 +4,8 @@
 #include <string>
 #include <memory>
 
+#include "common_message.h"
+
 
 namespace replies {
 	class Statistic;
@@ -95,6 +97,17 @@ public:
 	 * \param out       The sent bytes within the interval.
 	 */
 	void add_slice(time_t timestamp, traffic_t in, traffic_t out);
+
+	/**
+	 * \brief Set the optional return time interval.
+	 *
+	 * The interval is optional and should only set when the
+	 * requested interval differs from the available data
+	 * interval.
+	 *
+	 * \param range The interval where the service have data for.
+	 */
+	void available_interval(TimeRange const &range);
 };
 
 
