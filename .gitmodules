@@ -3,4 +3,4 @@
 	url = https://github.com/agdsn/traffic-service-protobuf.git
 [submodule "test/gtest"]
 	path = test/gtest
-	url = https://chromium.googlesource.com/chromium/testing/gtest
+	url =  https://chromium.googlesource.com/external/googletest
