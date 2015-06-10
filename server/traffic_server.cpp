@@ -41,7 +41,7 @@ void traffic::TrafficServer::WorkerBase::run(zmq::context_t &context)
 			socket.send(response);
 		} catch (std::exception &e) {
 			std::cerr << "Worker died: " << e.what() << std::endl;
-			return;
+			break;
 		}
 	}
 	socket.close();
