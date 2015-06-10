@@ -7,7 +7,7 @@
 namespace traffic {
 
 
-class MessageContext : public RequestVisitor
+class SessionContext : public RequestVisitor
 {
 private:
 	std::unique_ptr<ReplyMessage> _message;
@@ -25,8 +25,8 @@ public:
 	bool process_data(void const *data, size_t const size);
 	void encode_result(std::string &out);
 
-	MessageContext();
-	virtual ~MessageContext() { }
+	SessionContext();
+	virtual ~SessionContext() { }
 };
 
 

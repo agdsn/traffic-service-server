@@ -1,9 +1,9 @@
-#include "message_context.h"
+#include "session_context.h"
 
 #include <boost/assert.hpp>
 
 
-bool traffic::MessageContext::process_data(void const *data, size_t const size)
+bool traffic::SessionContext::process_data(void const *data, size_t const size)
 {
 	RequestMessage::ptr_t message(RequestMessage::parse_message(data, size));
 
@@ -18,31 +18,31 @@ bool traffic::MessageContext::process_data(void const *data, size_t const size)
 	}
 }
 
-void traffic::MessageContext::encode_result(std::string &out)
+void traffic::SessionContext::encode_result(std::string &out)
 {
 	BOOST_ASSERT(_message && "No message set");
 	_message->serialize(out);
 }
 
-traffic::MessageContext::MessageContext()
+traffic::SessionContext::SessionContext()
 :
 	_message(new ErrorReply(1, "No data processed"))
 { }
 
-void traffic::MessageContext::visit(const traffic::StatisticRequest &request) {
+void traffic::SessionContext::visit(const traffic::StatisticRequest &request) {
     ReplyMessage::ptr_t reply(fetch_statistic(request));
     if (reply) {
         _message.swap(reply);
     }
 }
 
-void traffic::MessageContext::visit(const traffic::SummaryRequest &request) {
+void traffic::SessionContext::visit(const traffic::SummaryRequest &request) {
     ReplyMessage::ptr_t reply(fetch_summary(request));
     if (reply) {
         _message.swap(reply);
     }
 }
 
-void traffic::MessageContext::visit(const traffic::ErrorRequest &) {
+void traffic::SessionContext::visit(const traffic::ErrorRequest &) {
 	_message.reset(new ErrorReply(3, "Cannot parse the message"));
 }
