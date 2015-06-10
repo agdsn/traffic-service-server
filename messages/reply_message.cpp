@@ -78,3 +78,5 @@ traffic::ErrorReply::ErrorReply(uint32_t code, std::string const &msg)
 	_error_msg->set_code(code);
 	_error_msg->set_reason(msg);
 }
+
+traffic::ReplyMessage::~ReplyMessage() { }

@@ -33,6 +33,7 @@ class ReplyMessage
 protected:
 	std::unique_ptr<replies::Reply> const _reply_msg;
 public:
+	using ptr_t = std::unique_ptr<ReplyMessage>;
 
 	/**
 	 * \brief Serialize the message to the wire format.
@@ -42,7 +43,7 @@ public:
 	void serialize(std::string &output) const;
 
 	ReplyMessage();
-	virtual ~ReplyMessage() { }
+	virtual ~ReplyMessage();
 };
 
 
