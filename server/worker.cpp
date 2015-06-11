@@ -2,26 +2,25 @@
 #include <boost/assert.hpp>
 
 #include "worker.h"
+#include "session_context.h"
 #include "requests.pb.h"
 
 
-bool traffic::MessageWorker::process(std::string &result, void *data, size_t size)
-{
-	(void) result;
-
-	requests::Request request;
-	request.ParseFromArray(data, size);
-
-	switch (request.Payload_case()) {
-		case requests::Request::kStatistic:
-			return process_statistics();
-		case requests::Request::kSummary:
-			return process_summary();
-		case requests::Request::PAYLOAD_NOT_SET:
-			return false;
+bool traffic::MessageWorker::process(std::string &result, void *data, size_t size) {
+	SessionContext context(_factory.instance());
+	context.encode_result(result);
+	if (context.process_data(data, size)) {
+		context.encode_result(result);
+		return true;
 	}
+	BOOST_ASSERT(false && "Message processing failed!");
 
-	BOOST_ASSERT(false && "Message parsing failed!");
+	return false;
+}
 
+bool traffic::MessageWorker::set_up() {
+	if (_factory.instance())
+		return true;
+	BOOST_ASSERT(false && "Cannot initialize database");
 	return false;
 }
