@@ -31,9 +31,12 @@ using traffic_t = long long;
 class ReplyMessage
 {
 protected:
-	std::unique_ptr<replies::Reply> const _reply_msg;
+	std::unique_ptr<replies::Reply> _reply_msg;
 public:
 	using ptr_t = std::unique_ptr<ReplyMessage>;
+
+	ReplyMessage(ReplyMessage const&) = delete;
+	ReplyMessage(ReplyMessage &&);
 
 	/**
 	 * \brief Serialize the message to the wire format.
@@ -56,6 +59,9 @@ private:
 	replies::Summary* _summary_msg;
 
 public:
+	SummaryReply(SummaryReply const &) = delete;
+	SummaryReply(SummaryReply&&);
+
 	/**
 	 * \brief Add a summary data entry to the list of summaries.
 	 *
@@ -79,6 +85,10 @@ private:
 	replies::Statistic* _statistic_msg;
 
 public:
+
+	StatisticReply(StatisticReply const &) = delete;
+	StatisticReply(StatisticReply&&);
+
 	/**
 	 * \brief Create a reply message.
 	 *
@@ -124,6 +134,9 @@ private:
 	replies::Error* _error_msg;
 
 public:
+	ErrorReply(ErrorReply const &) = delete;
+	ErrorReply(ErrorReply&&);
+
 	/**
 	 * \brief Create the error message.
 	 *

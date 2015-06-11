@@ -80,3 +80,32 @@ traffic::ErrorReply::ErrorReply(uint32_t code, std::string const &msg)
 }
 
 traffic::ReplyMessage::~ReplyMessage() { }
+
+traffic::ReplyMessage::ReplyMessage(traffic::ReplyMessage &&message)
+:
+	_reply_msg(message._reply_msg.release())
+{ }
+
+traffic::SummaryReply::SummaryReply(traffic::SummaryReply &&reply)
+:
+	ReplyMessage(std::move(reply)),
+	_summary_msg(std::move(reply._summary_msg))
+{
+	reply._summary_msg = 0;
+}
+
+traffic::StatisticReply::StatisticReply(traffic::StatisticReply &&reply)
+:
+	ReplyMessage(std::move(reply)),
+	_statistic_msg(std::move(reply._statistic_msg))
+{
+	reply._statistic_msg = 0;
+}
+
+traffic::ErrorReply::ErrorReply(traffic::ErrorReply &&reply)
+:
+	ReplyMessage(std::move(reply)),
+	_error_msg(std::move(reply._error_msg))
+{
+	_error_msg = 0;
+}
