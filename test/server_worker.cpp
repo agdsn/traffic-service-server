@@ -3,6 +3,7 @@
 #include "worker.h"
 #include "backend.h"
 #include "requests.pb.h"
+#include "replies.pb.h"
 
 
 class TestMessageWorker : public traffic::MessageWorker
@@ -27,16 +28,18 @@ public:
 
 		TestProvider(TestProviderFactory & tpf) : _tpf(tpf) {}
 
-		virtual traffic::ReplyMessage::ptr_t&& fetch_summary(traffic::SummaryRequest const &)
+		virtual traffic::ReplyMessage fetch_summary(traffic::SummaryRequest const &)
 		{
 			_tpf.summary = true;
-			return std::move(traffic::ReplyMessage::ptr_t());
+			return std::move(traffic::ErrorReply(1, "PENG"));
 		}
 
-		virtual traffic::ReplyMessage::ptr_t&& fetch_statistic(traffic::StatisticRequest const &)
+		traffic::ReplyMessage fetch_statistic(traffic::StatisticRequest const &)
 		{
 			_tpf.statistic = true;
-			return std::move(traffic::ReplyMessage::ptr_t());
+
+
+			return traffic::ErrorReply(0, "TestError");
 		}
 	};
 
@@ -73,4 +76,10 @@ TEST(ServerMessageWorker, basic_message_worker) {
 
 	EXPECT_TRUE(pf.statistic);
 	EXPECT_FALSE(pf.summary);
+
+	replies::Reply reply;
+	reply.ParseFromString(out_buffer);
+
+	EXPECT_EQ(replies::Reply::kError, reply.Payload_case());
+	EXPECT_EQ("TestError", reply.error().reason());
 }
