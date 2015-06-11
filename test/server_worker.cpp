@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "worker.h"
+#include "backend.h"
 #include "requests.pb.h"
 
 
@@ -9,33 +10,48 @@ class TestMessageWorker : public traffic::MessageWorker
 protected:
 	bool set_up() { return true; }
 
-	bool process_summary() {
-		summary = true;
-		return true;
-	}
-
-	bool process_statistics() {
-		statistic = true;
-		return true;
-	}
-
 public:
-	bool statistic;
-	bool summary;
+	struct TestProviderFactory : public traffic::DataProviderFactory
+	{
+		bool statistic;
+		bool summary;
+
+		TestProviderFactory() : statistic(false), summary(false) { }
+
+		traffic::DataProvider::ptr_t instance() { return traffic::DataProvider::ptr_t(new TestProvider(*this)); };
+	};
+
+	struct TestProvider : public traffic::DataProvider
+	{
+		TestProviderFactory & _tpf;
+
+		TestProvider(TestProviderFactory & tpf) : _tpf(tpf) {}
+
+		virtual traffic::ReplyMessage::ptr_t&& fetch_summary(traffic::SummaryRequest const &)
+		{
+			_tpf.summary = true;
+			return std::move(traffic::ReplyMessage::ptr_t());
+		}
+
+		virtual traffic::ReplyMessage::ptr_t&& fetch_statistic(traffic::StatisticRequest const &)
+		{
+			_tpf.statistic = true;
+			return std::move(traffic::ReplyMessage::ptr_t());
+		}
+	};
 
 	using traffic::MessageWorker::process;
 
-	TestMessageWorker()
+	TestMessageWorker(traffic::DataProviderFactory& pf)
 	:
-		traffic::MessageWorker(),
-		statistic(false),
-		summary(false)
+		traffic::MessageWorker(pf)
 	{ }
 };
 
 
 TEST(ServerMessageWorker, basic_message_worker) {
-	TestMessageWorker w;
+	TestMessageWorker::TestProviderFactory pf;
+	TestMessageWorker w(pf);
 
 	requests::Request request;
 	request.set_version(1);
@@ -55,6 +71,6 @@ TEST(ServerMessageWorker, basic_message_worker) {
 	std::string out_buffer;
 	w.process(out_buffer, (void *)buffer.c_str(), buffer.size());
 
-	EXPECT_TRUE(w.statistic);
-	EXPECT_FALSE(w.summary);
+	EXPECT_TRUE(pf.statistic);
+	EXPECT_FALSE(pf.summary);
 }
