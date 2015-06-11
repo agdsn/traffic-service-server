@@ -12,7 +12,7 @@ class SessionContext : public RequestVisitor
 {
 private:
 	std::unique_ptr<ReplyMessage> _message;
-	DataProvider& _data_provider;
+	DataProvider::ptr_t _data_provider;
 
 protected:
 	void visit(StatisticRequest const &request);
@@ -23,7 +23,7 @@ public:
 	bool process_data(void const *data, size_t const size);
 	void encode_result(std::string &out);
 
-	SessionContext(DataProvider& provider);
+	SessionContext(DataProvider::ptr_t provider);
 	virtual ~SessionContext() { }
 };
 

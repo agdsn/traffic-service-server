@@ -24,21 +24,21 @@ void traffic::SessionContext::encode_result(std::string &out)
 	_message->serialize(out);
 }
 
-traffic::SessionContext::SessionContext(DataProvider& provider)
+traffic::SessionContext::SessionContext(DataProvider::ptr_t provider)
 :
 	_message(new ErrorReply(1, "No data processed")),
 	_data_provider(provider)
 { }
 
 void traffic::SessionContext::visit(const traffic::StatisticRequest &request) {
-    ReplyMessage::ptr_t reply(_data_provider.fetch_statistic(request));
+    ReplyMessage::ptr_t reply(_data_provider->fetch_statistic(request));
     if (reply) {
         _message.swap(reply);
     }
 }
 
 void traffic::SessionContext::visit(const traffic::SummaryRequest &request) {
-    ReplyMessage::ptr_t reply(_data_provider.fetch_summary(request));
+    ReplyMessage::ptr_t reply(_data_provider->fetch_summary(request));
     if (reply) {
         _message.swap(reply);
     }
