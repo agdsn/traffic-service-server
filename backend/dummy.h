@@ -9,15 +9,9 @@ namespace traffic {
 class DummyProvider : public DataProvider
 {
 public:
-    virtual ReplyMessage::ptr_t &&fetch_summary(SummaryRequest const &) {
-        //return std::move(ReplyMessage::ptr_t());
-        return std::move(ReplyMessage::ptr_t(new ErrorReply(0, "PENG")));
-    }
+    ReplyMessage fetch_summary(SummaryRequest const &);
 
-    virtual ReplyMessage::ptr_t &&fetch_statistic(StatisticRequest const &) {
-        //return std::move(ReplyMessage::ptr_t());
-        return std::move(ReplyMessage::ptr_t(new ErrorReply(1, "PLONG")));
-    }
+    ReplyMessage fetch_statistic(StatisticRequest const &);
 };
 
 class DummyProviderFactory : public DataProviderFactory
@@ -25,12 +19,7 @@ class DummyProviderFactory : public DataProviderFactory
     DataProvider::ptr_t _instance;
 
 public:
-    DataProvider::ptr_t instance() {
-        if (!_instance)
-            _instance.reset(new DummyProvider);
-        return _instance;
-    }
-
+    DataProvider::ptr_t instance();
 };
 }
 

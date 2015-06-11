@@ -31,17 +31,11 @@ traffic::SessionContext::SessionContext(DataProvider::ptr_t provider)
 { }
 
 void traffic::SessionContext::visit(const traffic::StatisticRequest &request) {
-    ReplyMessage::ptr_t reply(_data_provider->fetch_statistic(request));
-    if (reply) {
-        _message.swap(reply);
-    }
+	_message.reset(new ReplyMessage(std::move(_data_provider->fetch_statistic(request))));
 }
 
 void traffic::SessionContext::visit(const traffic::SummaryRequest &request) {
-    ReplyMessage::ptr_t reply(_data_provider->fetch_summary(request));
-    if (reply) {
-        _message.swap(reply);
-    }
+	_message.reset(new ReplyMessage(std::move(_data_provider->fetch_summary(request))));
 }
 
 void traffic::SessionContext::visit(const traffic::ErrorRequest &) {

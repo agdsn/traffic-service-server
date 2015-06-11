@@ -10,8 +10,8 @@ class DataProvider {
 public:
     using ptr_t = std::shared_ptr<DataProvider>;
 
-    virtual ReplyMessage::ptr_t&& fetch_summary(SummaryRequest const &request) = 0;
-	virtual ReplyMessage::ptr_t&& fetch_statistic(StatisticRequest const &request) = 0;
+    virtual ReplyMessage fetch_summary(SummaryRequest const &request) = 0;
+	virtual ReplyMessage fetch_statistic(StatisticRequest const &request) = 0;
 };
 
 

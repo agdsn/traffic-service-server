@@ -84,7 +84,9 @@ traffic::ReplyMessage::~ReplyMessage() { }
 traffic::ReplyMessage::ReplyMessage(traffic::ReplyMessage &&message)
 :
 	_reply_msg(message._reply_msg.release())
-{ }
+{
+	std::cerr << "FOOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << _reply_msg->error().reason() << std::endl;
+}
 
 traffic::SummaryReply::SummaryReply(traffic::SummaryReply &&reply)
 :
@@ -108,4 +110,14 @@ traffic::ErrorReply::ErrorReply(traffic::ErrorReply &&reply)
 	_error_msg(std::move(reply._error_msg))
 {
 	_error_msg = 0;
+}
+
+traffic::ErrorReply::~ErrorReply()
+{
+
+	std::cerr << std::endl<< "FooBar  ";
+	if (_reply_msg)
+		std::cerr << _reply_msg->error().reason() <<std::endl;
+	else
+		std::cerr << "nullptr" << std::endl;
 }

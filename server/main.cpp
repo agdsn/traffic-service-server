@@ -3,6 +3,8 @@
 
 #include "commandline.h"
 #include "traffic_server.h"
+#include "worker.h"
+#include "dummy.h"
 
 
 int main(int argc, const char * argv[])
@@ -18,6 +20,11 @@ int main(int argc, const char * argv[])
 
 	for (std::string const &address : cmd.addresses()) {
 		server.bind("tcp://" + address);
+	}
+
+	traffic::DummyProviderFactory fac;
+	for (unsigned i = 0; i < cmd.worker(); ++i) {
+		server.start_worker(new traffic::MessageWorker(fac));
 	}
 
 	server.run();
