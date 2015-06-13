@@ -144,7 +144,6 @@ public:
 	 * \param message The error message in human readable terms.
 	 */
 	ErrorReply(uint32_t code, std::string const &message);
-	~ErrorReply();
 };
 
 }
