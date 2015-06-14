@@ -19,6 +19,7 @@ pkg_check_modules(PC_ZMQ REQUIRED libzmq>=3.0)
 find_library(ZMQ_LIBRARIES NAMES zmq libzmq
              HINTS ${PC_ZMQ_LIBDIR} ${PC_ZMQ_LIBRARY_DIRS})
 
+find_library(SQLITE_LIBRARY sqlite3)
 
 set(CTEST_MEMORYCHECK_SUPPRESSIONS_FILE
 	${CTEST_SOURCE_DIRECTORY}/test/valgrind/zeromq.supp)

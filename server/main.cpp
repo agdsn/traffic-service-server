@@ -5,7 +5,18 @@
 #include "traffic_server.h"
 #include "worker.h"
 #include "dummy.h"
+#include "sqlite.h"
 
+
+traffic::DataProviderFactory *create_factory(traffic::Commandline const &cmd)
+{
+	switch (cmd.storage_type()) {
+		case traffic::Commandline::SQLITE:
+			return new traffic::SqliteDataProviderFactory(cmd.sqlite_file());
+		default:
+			return new traffic::DummyProviderFactory();
+	}
+}
 
 int main(int argc, const char * argv[])
 {
@@ -22,9 +33,11 @@ int main(int argc, const char * argv[])
 		server.bind("tcp://" + address);
 	}
 
-	traffic::DummyProviderFactory fac;
+
+	std::unique_ptr<traffic::DataProviderFactory> fac(create_factory(cmd));
+
 	for (unsigned i = 0; i < cmd.worker(); ++i) {
-		server.start_worker(new traffic::MessageWorker(fac));
+		server.start_worker(new traffic::MessageWorker(*fac));
 	}
 
 	server.run();
