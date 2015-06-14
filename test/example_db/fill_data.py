@@ -16,6 +16,8 @@ STEP = 10 # minutes
 
 
 class TimeInterval(object):
+    _epoch = datetime(1970,1,1)
+
     def __init__(self, interval, step):
         if not isinstance(interval, timedelta):
             interval = timedelta(hours=interval)
@@ -29,7 +31,7 @@ class TimeInterval(object):
     def __iter__(self):
         stop = self.now - self.interval
         while stop < self.now:
-            yield stop
+            yield int((stop - self._epoch).total_seconds())
             stop += self.step
 
 class ClientBytes(object):
