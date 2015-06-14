@@ -3,14 +3,16 @@
 #include <sqlite3.h>
 #include <iostream>
 
-traffic::ReplyMessage traffic::SqliteDataProvider::fetch_summary(const traffic::SummaryRequest &request) {
+traffic::ReplyMessage traffic::SqliteDataProvider::fetch_summary(const traffic::SummaryRequest &request)
+{
     if (! valid())
         return ErrorReply(10, "No valid database connection");
     (void)request;
     return traffic::ReplyMessage();
 }
 
-traffic::ReplyMessage traffic::SqliteDataProvider::fetch_statistic(const traffic::StatisticRequest &request) {
+traffic::ReplyMessage traffic::SqliteDataProvider::fetch_statistic(const traffic::StatisticRequest &request)
+{
     if (! valid())
         return ErrorReply(10, "No valid database connection");
     (void)request;
@@ -29,7 +31,8 @@ traffic::SqliteDataProvider::SqliteDataProvider(std::string const &dbname)
     }
 }
 
-bool traffic::SqliteDataProvider::valid() const {
+bool traffic::SqliteDataProvider::valid() const
+{
     return _db != 0;
 }
 
