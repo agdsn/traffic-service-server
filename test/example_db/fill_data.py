@@ -39,7 +39,7 @@ class ClientBytes(object):
         self.lastbytes = random.randint(0, 1024*1024*1024*3)
 
     def nextbytes(self):
-        newbytes = self.lastbytes + random.randint(-1024*1024*500, 1024*1024*500)
+        newbytes = max(0, self.lastbytes + random.randint(-1024*1024*500, 1024*1024*500))
         self.lastbytes = newbytes
         return newbytes
         
