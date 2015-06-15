@@ -91,6 +91,32 @@ public:
     }
 };
 
+
+std::string traffic::SqliteDataProvider::_summary_query(size_t hostcount) {
+    std::stringstream placeholders;
+    for (size_t i = 0; i < hostcount; ++i) {
+        if (0 != i)
+            placeholders << ", ";
+        placeholders << "?";
+    }
+
+    std::stringstream query;
+    query << "SELECT ip, SUM(input) AS input, SUM(output) AS output FROM ("
+    << "  SELECT i.ip_dst AS ip, SUM(i.bytes) AS input, 0 AS output "
+    << "    FROM " << _inbound_table << " AS i "
+    << "    WHERE stamp_inserted <= ? and stamp_inserted > ?"
+    << "    GROUP BY i.ip_dst"
+    << "  UNION "
+    << "  SELECT o.ip_src AS ip, 0 AS input, SUM(o.bytes) AS output "
+    << "    FROM " << _outbound_table << " AS o "
+    << "    WHERE stamp_inserted <= ? and stamp_inserted > ?"
+    << "    GROUP BY o.ip_src"
+    << ") WHERE ip in (" << placeholders.str() << ") GROUP BY ip";
+
+    return query.str();
+}
+
+
 traffic::ReplyMessage traffic::SqliteDataProvider::fetch_summary(const traffic::SummaryRequest &request)
 {
     if (! valid())
@@ -135,6 +161,7 @@ traffic::ReplyMessage traffic::SqliteDataProvider::fetch_summary(const traffic::
     return std::move(reply);
 }
 
+
 traffic::ReplyMessage traffic::SqliteDataProvider::fetch_statistic(const traffic::StatisticRequest &request)
 {
     if (! valid())
@@ -142,6 +169,7 @@ traffic::ReplyMessage traffic::SqliteDataProvider::fetch_statistic(const traffic
     (void)request;
     return traffic::ReplyMessage();
 }
+
 
 traffic::SqliteDataProvider::SqliteDataProvider(std::string const &dbname,
                                                 std::string const &inbound_table,
@@ -159,10 +187,12 @@ traffic::SqliteDataProvider::SqliteDataProvider(std::string const &dbname,
     }
 }
 
+
 bool traffic::SqliteDataProvider::valid() const
 {
     return _db != 0;
 }
+
 
 traffic::SqliteDataProviderFactory::SqliteDataProviderFactory(std::string const &dbname,
                                                               std::string const &inbound_table,
@@ -183,26 +213,3 @@ traffic::DataProvider::ptr_t traffic::SqliteDataProviderFactory::instance()
 }
 
 thread_local std::shared_ptr<traffic::SqliteDataProvider> traffic::SqliteDataProviderFactory::_instance;
-
-std::string traffic::SqliteDataProvider::_summary_query(size_t hostcount) {
-    std::stringstream placeholders;
-    for (size_t i = 0; i < hostcount; ++i) {
-        if (0 != i)
-            placeholders << ", ";
-        placeholders << "?";
-    }
-    std::stringstream query;
-    query << "SELECT ip, SUM(input) AS input, SUM(output) AS output FROM ("
-          << "  SELECT i.ip_dst AS ip, SUM(i.bytes) AS input, 0 AS output "
-          << "    FROM " << _inbound_table << " AS i "
-          << "    WHERE stamp_inserted <= ? and stamp_inserted > ?"
-          << "    GROUP BY i.ip_dst"
-          << "  UNION "
-          << "  SELECT o.ip_src AS ip, 0 AS input, SUM(o.bytes) AS output "
-          << "    FROM " << _outbound_table << " AS o "
-          << "    WHERE stamp_inserted <= ? and stamp_inserted > ?"
-          << "    GROUP BY o.ip_src"
-          << ") WHERE ip in (" << placeholders.str() << ") GROUP BY ip";
-    return query.str();
-}
-
