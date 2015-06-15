@@ -5,7 +5,7 @@
 #include <sstream>
 #include <boost/assert.hpp>
 
-#define MAX_PARAMS 500UL
+#define MAX_PARAMS 800UL
 
 
 class PreparedStatement {
@@ -64,6 +64,12 @@ public:
     long long int get_long(unsigned id)
     {
         return sqlite3_column_int64(_statement, id);
+    }
+
+    void reset()
+    {
+	    sqlite3_clear_bindings(_statement);
+            sqlite3_reset(_statement);
     }
 
     PreparedStatement(sqlite3 *db, std::string const &query)
@@ -125,30 +131,37 @@ traffic::ReplyMessage traffic::SqliteDataProvider::fetch_summary(const traffic::
 
     size_t address_count(request.addresses().size());
     size_t processed(0);
+    size_t chunk_before(0);
 
     SummaryReply reply;
+
+    std::unique_ptr<PreparedStatement> query;
 
     while(processed < address_count) {
         size_t chunk(std::min(MAX_PARAMS, address_count - processed));
 
-        PreparedStatement query(_db, _summary_query(chunk));
+        if (!query || chunk_before != chunk) {
+	    query.reset(new PreparedStatement(_db, _summary_query(chunk)));
+        } else {
+            query->reset();
+	}
 
-        query.bind(request.range().end());
-        query.bind(request.range().start());
-        query.bind(request.range().end());
-        query.bind(request.range().start());
+        query->bind(request.range().end());
+        query->bind(request.range().start());
+        query->bind(request.range().end());
+        query->bind(request.range().start());
 
         for (auto addr = request.addresses().begin() + processed;
                 addr != request.addresses().begin() + processed + chunk;
                 ++addr) {
-            query.bind(*addr);
+            query->bind(*addr);
         }
 
         PreparedStatement::Status result;
-        while ((result = query.step()) == PreparedStatement::Status::OK) {
-            reply.add_entry(query.get_string(1),
-                            query.get_long(2),
-                            query.get_long(3));
+        while ((result = query->step()) == PreparedStatement::Status::OK) {
+            reply.add_entry(query->get_string(1),
+                            query->get_long(2),
+                            query->get_long(3));
         }
 
         if (result == PreparedStatement::Status::ERROR) {
