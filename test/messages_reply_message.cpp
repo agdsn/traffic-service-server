@@ -164,6 +164,8 @@ public:
 	}
 };
 
+#ifndef NDEBUG
 ::testing::Environment* const shutdown_env =
 	::testing::AddGlobalTestEnvironment(new ShutdownEnvironment);
+#endif
 }
