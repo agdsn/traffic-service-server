@@ -9,6 +9,10 @@ target_link_libraries(traffic_service_lib backend)
 target_link_libraries(traffic_service_lib ${ZMQ_LIBRARIES})
 target_link_libraries(traffic_service_lib ${CMAKE_THREAD_LIBS_INIT})
 
+if(GPERFTOOLS_LIBRARY)
+	target_link_libraries(traffic_service_lib ${GPERFTOOLS_LIBRARY})
+endif()
+
 target_include_directories(traffic_service_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(traffic_service "main.cpp")
