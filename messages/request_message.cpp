@@ -7,17 +7,17 @@
 
 namespace {
 traffic::StatisticRequest::Interval convert_interval(requests::Statistic_DataInterval const &origin) {
-    using Origin = requests::Statistic_DataInterval;
+	using Origin = requests::Statistic_DataInterval;
 	using Traffic = traffic::StatisticRequest::Interval;
 
-    switch (origin) {
+	switch (origin) {
 		case Origin::Statistic_DataInterval_DAY:
 			return Traffic::DAY;
 		case Origin::Statistic_DataInterval_HOUR:
 			return Traffic::HOUR;
 		case Origin::Statistic_DataInterval_DETAIL:
 			return Traffic::DETAIL;
-    }
+	}
 
 	BOOST_ASSERT(false);
 	return Traffic::DETAIL;
