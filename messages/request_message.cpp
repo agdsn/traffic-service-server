@@ -38,11 +38,9 @@ traffic::RequestMessage::parse_message(void const *data, size_t const size)
 			return ptr_t(new SummaryRequest(
 						request.summary()));
 		case requests::Request::PAYLOAD_NOT_SET:
-			std::cerr << "Payload not set" << std::endl;
+			std::cerr << "Payload not set or valid" << std::endl;
 			break;
 	}
-
-	BOOST_ASSERT(false && "Message parsing failed!");
 
 	return ptr_t(new ErrorRequest());
 }
