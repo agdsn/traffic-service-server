@@ -122,6 +122,27 @@ TEST(MessagesRequest, deserialize_statistic_request) {
 }
 
 
+// Test garbage processing
+TEST(MessagesRequest, deserialize_garbage_request) {
+	std::string bytes("aoajfiepojfiewifhewdkewifwü+fewpwzfrfjewfqqäsadfpoewjf");
+
+	traffic::RequestMessage::ptr_t msg(
+			traffic::RequestMessage::parse_message(bytes.c_str(),
+							       bytes.size()));
+
+
+	ASSERT_EQ(typeid(traffic::ErrorRequest), typeid(*msg));
+
+	TypeVisitor v;
+	msg->accept(v);
+	ASSERT_EQ(TypeVisitor::ERROR, v.visited());
+
+	traffic::ErrorRequest* stat(dynamic_cast<traffic::ErrorRequest*>(msg.get()));
+
+	ASSERT_NE(nullptr, stat);
+}
+
+
 
 
 /**
