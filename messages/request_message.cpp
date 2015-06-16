@@ -28,7 +28,10 @@ traffic::RequestMessage::ptr_t
 traffic::RequestMessage::parse_message(void const *data, size_t const size)
 {
 	requests::Request request;
-	request.ParseFromArray(data, size);
+	if (!request.ParseFromArray(data, size)) {
+		std::cerr << "Failed to parse proto message" << std::endl;
+		return ptr_t(new ErrorRequest());
+	}
 
 	switch (request.Payload_case()) {
 		case requests::Request::kStatistic:
