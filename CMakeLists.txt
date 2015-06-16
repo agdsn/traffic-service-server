@@ -21,7 +21,11 @@ find_library(ZMQ_LIBRARIES NAMES zmq libzmq
 
 find_library(SQLITE_LIBRARY sqlite3)
 
-find_library(GPERFTOOLS_LIBRARY profiler)
+option(G_PROFILE "G_PROFILE" OFF)
+
+if (G_PROFILE)
+	find_library(GPERFTOOLS_LIBRARY profiler)
+endif()
 
 if(NOT GPERFTOOLS_LIBRARY)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -Wextra -DNOPROFILE")
