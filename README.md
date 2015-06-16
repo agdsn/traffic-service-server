@@ -125,3 +125,11 @@ executing `git submodule init` and then update it using `git submodule
 update`. At this point I recommend again to read the 
 [git submodule documentation](http://git-scm.com/book/de/Git-Tools-Submodule).
 
+## Profiling
+
+There is basic support for google-perftool CPU-Profiling. Just install
+google perf tools (on debian its libgoogle-perftools-dev) and set
+`-DG_PROFILE=ON`. This links the binary with `-lprofile`. With that
+enabled the `make test_memcheck` will fail. To enable profiling on the
+run see [the gperf documentation](https://gperftools.googlecode.com/git/doc/cpuprofile.html)
+or use the macro in `server/profile.h`.
