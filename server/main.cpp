@@ -12,7 +12,8 @@ traffic::DataProviderFactory *create_factory(traffic::Commandline const &cmd)
 {
 	switch (cmd.storage_type()) {
 		case traffic::Commandline::SQLITE:
-			return new traffic::SqliteDataProviderFactory(cmd.sqlite_file(),
+			return new traffic::SqliteDataProviderFactory(
+					cmd.sqlite_file(),
 					cmd.table_incomming(),
 					cmd.table_outgoing());
 		default:
