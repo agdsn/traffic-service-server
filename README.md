@@ -13,6 +13,7 @@ To compile this you need:
 * ZeroMQ (oldest tested version: 4.0.4)
 * Boost.Program_options (oldest tested version: 1.55.0.2)
 * gcc (oldest tested version: 4.8 - you need C++11 support)
+* sqlite3 (working with 3.8.10.2)
 
 The current target is a Debian jessie (testing). The given versions
 are tested versions. This does not mean that this are the only working
