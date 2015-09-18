@@ -4,7 +4,7 @@
 
 
 #include "traffic_server.h"
-
+#include "profile.h"
 
 void traffic::TrafficServer::WorkerBase::run(zmq::context_t &context)
 {
@@ -30,6 +30,7 @@ void traffic::TrafficServer::WorkerBase::run(zmq::context_t &context)
 			zmq::message_t request;
 			socket.recv (&request);
 
+			CPU_PROFILE("message_cycle");
 			std::string result;
 			if (!this->process(result, request.data(), request.size()))
 				std::cerr << "Error processing message of "
