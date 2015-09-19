@@ -79,6 +79,56 @@ std::string traffic::Commandline::sqlite_file() const
 }
 
 
+std::string traffic::Commandline::host() const
+{
+	BOOST_ASSERT(_vm.count("host") && "No host specified!");
+
+	if (! _vm.count("host"))
+		return "";
+	return _vm["host"].as<std::string>();
+}
+
+
+unsigned int traffic::Commandline::port() const
+{
+	BOOST_ASSERT(_vm.count("port") && "No port specified!");
+
+	if (! _vm.count("port"))
+		return 0;
+	return _vm["port"].as<unsigned int>();
+}
+
+
+std::string traffic::Commandline::user() const
+{
+	BOOST_ASSERT(_vm.count("user") && "No user specified!");
+
+	if (! _vm.count("user"))
+		return "";
+	return _vm["user"].as<std::string>();
+}
+
+
+std::string traffic::Commandline::password() const
+{
+	BOOST_ASSERT(_vm.count("password") && "No password specified!");
+
+	if (! _vm.count("password"))
+		return "";
+	return _vm["password"].as<std::string>();
+}
+
+
+std::string traffic::Commandline::database() const
+{
+	BOOST_ASSERT(_vm.count("database") && "No database specified!");
+
+	if (! _vm.count("database"))
+		return "";
+	return _vm["database"].as<std::string>();
+}
+
+
 bool traffic::Commandline::parse(int argc, char const *argv[])
 {
 	try {
@@ -104,6 +154,30 @@ bool traffic::Commandline::parse(int argc, char const *argv[])
 				return false;
 			}
 		case MYSQL:
+			if (!_vm.count("host")) {
+				std::cerr << "option --host missing for "
+					     "storage_type mysql!"
+					  << std::endl;
+				return false;
+			}
+			if (!_vm.count("user")) {
+				std::cerr << "option --user missing for "
+					     "storage_type mysql!"
+					  << std::endl;
+				return false;
+			}
+			if (!_vm.count("password")) {
+				std::cerr << "option --password missing for "
+					     "storage_type mysql!"
+					  << std::endl;
+				return false;
+			}
+			if (!_vm.count("database")) {
+				std::cerr << "option --database missing for "
+					     "storage_type mysql!"
+					  << std::endl;
+				return false;
+			}
 		case POSTGRES:
 			break;
 	}
@@ -144,7 +218,21 @@ traffic::Commandline::Commandline()
 		 "Database file")
 		;
 
-	_desc.add(general).add(sqlite);
+	po::options_description mysql("MySql options");
+	mysql.add_options()
+		("host", po::value<std::string>(),
+		 "Database host")
+		("port", po::value<unsigned int>()->default_value(3306),
+		 "Database port")
+		("user", po::value<std::string>(),
+		 "Database user")
+		("password", po::value<std::string>(),
+		 "Database password")
+		("database", po::value<std::string>(),
+		 "Database name")
+		;
+
+	_desc.add(general).add(sqlite).add(mysql);
 }
 
 

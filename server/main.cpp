@@ -6,6 +6,7 @@
 #include "worker.h"
 #include "dummy.h"
 #include "sqlite.h"
+#include "mysql.h"
 
 
 traffic::DataProviderFactory *create_factory(traffic::Commandline const &cmd)
@@ -16,6 +17,13 @@ traffic::DataProviderFactory *create_factory(traffic::Commandline const &cmd)
 					cmd.sqlite_file(),
 					cmd.table_incomming(),
 					cmd.table_outgoing());
+		case traffic::Commandline::MYSQL:
+			return new traffic::MySqlDataProviderFactory(
+					cmd.host(),
+					cmd.port(),
+					cmd.user(),
+					cmd.password(),
+					cmd.database());
 		default:
 			return new traffic::DummyProviderFactory();
 	}

@@ -71,6 +71,22 @@ public:
 	 */
 	std::string sqlite_file() const;
 
+
+	std::string host() const;
+
+
+	unsigned int port() const;
+
+
+	std::string user() const;
+
+
+	std::string password() const;
+
+
+	std::string database() const;
+
+
 	/**
 	 * \brief Parse the commandline arguments.
 	 *
