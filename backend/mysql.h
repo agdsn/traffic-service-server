@@ -1,10 +1,11 @@
 #ifndef __BACKEND__MYSQL_H__
 #define __BACKEND__MYSQL_H__
 
-#include <backend.h>
+#include "backend.h"
 
-
-typedef struct session session;
+namespace soci {
+	typedef struct session session;
+}
 
 
 namespace traffic {
@@ -13,7 +14,7 @@ namespace traffic {
 class MySqlDataProvider : public DataProvider
 {
 
-	session * _sql;
+	soci::session * _sql_ptr;
 
 public:
 
@@ -33,34 +34,30 @@ public:
 			  unsigned int port,
 			  std::string const &user,
 			  std::string const &password,
-			  std::string const &database)
-	{
-		(void)host;
-		(void)port;
-		(void)user;
-		(void)password;
-		(void)database;
-	}
+			  std::string const &database);
+
+	~MySqlDataProvider();
 };
 
 
 class MySqlDataProviderFactory : public DataProviderFactory
 {
+	std::string const &_host;
+	unsigned int _port;
+	std::string const &_user;
+	std::string const &_password;
+	std::string const &_database;
+
+	static thread_local std::shared_ptr<MySqlDataProvider> _instance;
+
 public:
-	DataProvider::ptr_t instance() { return 0; }
+	DataProvider::ptr_t instance();
 
 	MySqlDataProviderFactory(std::string const &host,
 				 unsigned int port,
 				 std::string const &user,
 				 std::string const &password,
-				 std::string const &database)
-	{
-		(void)host;
-		(void)port;
-		(void)user;
-		(void)password;
-		(void)database;
-	}
+				 std::string const &database);
 };
 
 }
