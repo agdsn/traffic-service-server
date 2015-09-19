@@ -201,6 +201,15 @@ traffic::SqliteDataProvider::SqliteDataProvider(std::string const &dbname,
 }
 
 
+traffic::SqliteDataProvider::~SqliteDataProvider()
+{
+	if (valid()) {
+		sqlite3_close(_db);
+		_db = 0;
+	}
+}
+
+
 bool traffic::SqliteDataProvider::valid() const
 {
 	return _db != 0;
@@ -224,5 +233,9 @@ traffic::DataProvider::ptr_t traffic::SqliteDataProviderFactory::instance()
 	}
 	return _instance;
 }
+
+traffic::SqliteDataProviderFactory::~SqliteDataProviderFactory()
+{ }
+
 
 thread_local std::shared_ptr<traffic::SqliteDataProvider> traffic::SqliteDataProviderFactory::_instance;

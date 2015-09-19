@@ -56,6 +56,8 @@ public:
 	 * \return Either a traffic::StatisticReply or a traffic::ErrorReply.
 	 */
 	virtual ReplyMessage fetch_statistic(StatisticRequest const &request) = 0;
+
+	virtual ~DataProvider() { }
 };
 
 
@@ -87,6 +89,8 @@ public:
 	 * \return A DataProvider to use from the workers.
 	 */
 	virtual DataProvider::ptr_t instance() = 0;
+
+	virtual ~DataProviderFactory() { }
 };
 
 }

@@ -1,8 +1,6 @@
 #ifndef __BACKEND__SQLITE_H__
 #define __BACKEND__SQLITE_H__
 
-#include <sqlite3.h>
-
 #include "backend.h"
 
 typedef struct sqlite3 sqlite3;
@@ -28,6 +26,8 @@ public:
 	SqliteDataProvider(std::string const &dbname,
 	                   std::string const &inbound_table,
 	                   std::string const &outbound_table);
+
+	~SqliteDataProvider();
 };
 
 class SqliteDataProviderFactory : public DataProviderFactory
@@ -42,6 +42,8 @@ public:
 	SqliteDataProviderFactory(std::string const &dbname,
 	                          std::string const &inbound_table,
 	                          std::string const &outbound_table);
+
+	~SqliteDataProviderFactory();
 };
 
 
