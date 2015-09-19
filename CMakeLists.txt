@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 2.8.11)
 project (traffic-service)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -ggdb3") # implicit: -g
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -mtune=native") # implicit: -DNDEBUG -O3 
@@ -20,6 +22,8 @@ find_library(ZMQ_LIBRARIES NAMES zmq libzmq
              HINTS ${PC_ZMQ_LIBDIR} ${PC_ZMQ_LIBRARY_DIRS})
 
 find_library(SQLITE_LIBRARY sqlite3)
+
+find_package(Soci)
 
 option(G_PROFILE "G_PROFILE" OFF)
 
