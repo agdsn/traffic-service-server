@@ -168,6 +168,11 @@ TEST_F(ServerCommandline, test_storage_mysql) {
 	EXPECT_TRUE(cmd.parse(3 + 8 + 4, argv));
 
 	EXPECT_EQ(cmd.storage_type(), traffic::Commandline::MYSQL);
+	EXPECT_EQ(cmd.host(), "localhost");
+	EXPECT_EQ(cmd.port(), 3306U);
+	EXPECT_EQ(cmd.user(), "abc");
+	EXPECT_EQ(cmd.password(), "cde");
+	EXPECT_EQ(cmd.database(), "foo");
 }
 
 
