@@ -19,6 +19,28 @@ std::string connection_string(std::string const &host,
 }
 
 
+void traffic::MySqlDataProvider::ensure_connection()
+{
+	(*_sql_ptr) << "SELECT 1";
+}
+
+
+traffic::ReplyMessage
+traffic::MySqlDataProvider::fetch_summary(SummaryRequest const &request)
+{
+	(void) request;
+	return ReplyMessage();
+}
+
+
+traffic::ReplyMessage
+traffic::MySqlDataProvider::fetch_statistic(StatisticRequest const &request)
+{
+	(void) request;
+	return ReplyMessage();
+}
+
+
 traffic::MySqlDataProvider::MySqlDataProvider(std::string const &host,
 					      unsigned int port,
 					      std::string const &user,

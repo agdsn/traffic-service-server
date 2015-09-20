@@ -15,20 +15,13 @@ class MySqlDataProvider : public DataProvider
 {
 
 	soci::session * _sql_ptr;
+	void ensure_connection();
 
 public:
 
-	ReplyMessage fetch_summary(SummaryRequest const &request)
-	{
-		(void) request;
-		return ReplyMessage();
-	}
+	ReplyMessage fetch_summary(SummaryRequest const &request);
 
-	ReplyMessage fetch_statistic(StatisticRequest const &request)
-	{
-		(void) request;
-		return ReplyMessage();
-	}
+	ReplyMessage fetch_statistic(StatisticRequest const &request);
 
 	MySqlDataProvider(std::string const &host,
 			  unsigned int port,
