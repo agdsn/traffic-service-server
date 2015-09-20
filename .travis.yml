@@ -26,7 +26,7 @@ before_install:
 
 
 install:
-  - sudo apt-get install -q g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev soci
+  - sudo apt-get install -q g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev libsoci-core3.2 libsoci-mysql3.2 libsoci3.2-dev
   - export CXX="g++-4.9" CC="gcc-4.9"
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 90
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 90
