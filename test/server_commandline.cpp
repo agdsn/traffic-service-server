@@ -158,9 +158,14 @@ TEST_F(ServerCommandline, test_storage_sqlite) {
 // Test for mysql storage type
 TEST_F(ServerCommandline, test_storage_mysql) {
 	traffic::Commandline cmd;
-	const char* argv[] = {"foobar", "-s", "mysql", REQUIRED_TABLES};
+	const char* argv[] = {"foobar", "-s", "mysql",
+		"--host", "localhost",
+		"--user", "abc",
+		"--password", "cde",
+		"--database", "foo",
+		REQUIRED_TABLES};
 
-	EXPECT_TRUE(cmd.parse(3 + 4, argv));
+	EXPECT_TRUE(cmd.parse(3 + 8 + 4, argv));
 
 	EXPECT_EQ(cmd.storage_type(), traffic::Commandline::MYSQL);
 }
