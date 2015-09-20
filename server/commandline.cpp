@@ -153,6 +153,7 @@ bool traffic::Commandline::parse(int argc, char const *argv[])
 					  << std::endl;
 				return false;
 			}
+			break;
 		case MYSQL:
 			if (!_vm.count("host")) {
 				std::cerr << "option --host missing for "
@@ -178,6 +179,7 @@ bool traffic::Commandline::parse(int argc, char const *argv[])
 					  << std::endl;
 				return false;
 			}
+			break;
 		case POSTGRES:
 			break;
 	}
