@@ -13,6 +13,7 @@ before_install:
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test --yes
   - sudo apt-add-repository ppa:chris-lea/zeromq --yes
   - sudo add-apt-repository ppa:kalakris/cmake --yes
+  - sudo add-apt-repository ppa:b-s-a/ppa --yes
   - sudo apt-get update -qq
   - wget --no-verbose --output-document=boost-trunk.tar.bz2 http://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/boost_${BOOST_VERSION//\./_}.tar.bz2/download
   - export BOOST_ROOT="$TRAVIS_BUILD_DIR/../boost-build"
@@ -25,7 +26,7 @@ before_install:
 
 
 install:
-  - sudo apt-get install -q g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev
+  - sudo apt-get install -q g++-4.9 gcc-4.9 libzmq3-dev valgrind cmake protobuf-compiler libprotobuf-dev libprotoc-dev soci
   - export CXX="g++-4.9" CC="gcc-4.9"
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 90
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 90
